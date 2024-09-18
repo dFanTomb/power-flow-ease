@@ -33,8 +33,8 @@ export const Logo = ({ invertImage }: Params) => {
           sx={{ maxWidth: '40px', mr: 2, filter: `invert(${theme.palette.mode === 'light' ? '0' : '1'})` }}
         />
       </Box>
-      <Typography variant={'h4'} component={'h1'} fontSize={'1.5rem'} fontWeight={'fontWeightBold'}>
-        FlowMaster
+      <Typography variant={'h4'} component={'h1'} fontSize={'1.3rem'} fontWeight={'fontWeightBold'}>
+        PowerFlowEase
       </Typography>
     </Box>
   );

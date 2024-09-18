@@ -1,1 +1,1 @@
-export const APP_NAME = 'FlowMaster';
+export const APP_NAME = 'PowerFlowEase';
