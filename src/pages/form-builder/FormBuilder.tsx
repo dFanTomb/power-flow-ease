@@ -1,15 +1,24 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Add, Delete } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import { Content, Item, Clone, Handle, Kiosk, ListContainer, Notice } from './components/styled-components.ts';
+import {
+  Content,
+  Item,
+  Clone,
+  Handle,
+  Kiosk,
+  ListContainer,
+  Notice,
+  IconButton,
+} from './components/styled-components.ts';
 import { ITEMS } from './constants.ts';
 import { IconResolver } from './IconResolver.tsx';
-import { move, copy, reorder } from './utils';
+import { move, copy, reorder, remove } from './utils';
 import { State } from './types';
 
 export default function FormBuilder() {
@@ -56,6 +65,13 @@ export default function FormBuilder() {
   // const addList = () => {
   //   setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
   // };
+
+  const handleRemove = (listId: string, itemId: string) => {
+    setState((prevState: State) => ({
+      ...prevState,
+      [listId]: remove(prevState[listId], itemId),
+    }));
+  };
 
   return (
     <Container>
@@ -114,6 +130,12 @@ export default function FormBuilder() {
                               >
                                 <Handle {...provided.dragHandleProps}>{IconResolver(listItem.content)}</Handle>
                                 {listItem.content}
+                                <IconButton
+                                  onClick={() => handleRemove(list, listItem.id)}
+                                  style={{ marginLeft: 'auto' }}
+                                >
+                                  <Delete />
+                                </IconButton>
                               </Item>
                             )}
                           </Draggable>

@@ -23,8 +23,8 @@ export default function HomePage() {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box component={'img'} src={logo} alt={''} sx={{ maxWidth: '40px', mr: 2 }} />
-            <Typography variant={'h4'} component={'h1'} fontSize={'1.5rem'} fontWeight={'fontWeightBold'}>
-              FlowMaster
+            <Typography variant={'h4'} component={'h1'} fontSize={'1.3rem'} fontWeight={'fontWeightBold'}>
+              PowerFlowEase
             </Typography>
           </Box>
           <Button variant={'outlined'} onClick={() => navigate(routes.login)}>
@@ -43,7 +43,7 @@ export default function HomePage() {
         }}
       >
         <Typography variant={'h3'} component={'h1'}>
-          Master your workflow with FlowMaster
+          Master your workflow with PowerFlowEase
         </Typography>
         <Typography variant={'h6'} component={'h2'}>
           Stay organized and revolutionize the way you manage your projects with our powerful workflow management tool.

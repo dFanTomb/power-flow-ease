@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 export const Content = styled('div')(() => ({
   marginRight: '200px',
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'row-reverse',
+  justifyContent: 'space-between',
   columnGap: '20px',
 }));
 
@@ -11,12 +12,12 @@ export const Item = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdragging',
 })<{ isdragging: boolean }>(({ isdragging }) => ({
   display: 'flex',
-  userSelect: 'none',
-  padding: '0.5rem',
-  margin: '0 0 0.5rem 0',
   alignItems: 'flex-start',
   alignContent: 'flex-start',
-  lineHeight: 1.5,
+  userSelect: 'none',
+  padding: '0.5rem',
+  margin: '2px 0',
+  // lineHeight: 1.5,
   borderRadius: '3px',
   background: '#fff',
   border: `1px ${isdragging ? 'dashed #000' : 'solid #ddd'}`,
@@ -32,7 +33,7 @@ export const Clone = styled(Item, {
 
 export const Handle = styled('div')(() => ({
   display: 'flex',
-  alignItems: 'center',
+  // alignItems: 'center',
   alignContent: 'center',
   userSelect: 'none',
   margin: '-0.5rem 0.5rem -0.5rem -0.5rem',
@@ -51,7 +52,7 @@ export const List = styled('div', {
   background: '#fff',
   padding: '0.5rem 0.5rem 0',
   borderRadius: '3px',
-  flex: '0 0 150px',
+  flex: '0 0 auto',
   fontFamily: 'sans-serif',
 }));
 
@@ -68,12 +69,18 @@ export const ListContainer = styled(List)(() => ({
 
 export const Notice = styled('div')(() => ({
   display: 'flex',
-  alignItems: 'center',
-  alignContent: 'center',
   justifyContent: 'center',
   padding: '0.5rem',
   margin: '0 0.5rem 0.5rem',
   border: '1px solid transparent',
   lineHeight: 1.5,
   color: '#aaa',
+}));
+
+export const IconButton = styled('div')(() => ({
+  paddingRight: '10px',
+  color: 'gray',
+  '&:hover': {
+    color: 'lightgray',
+  },
 }));

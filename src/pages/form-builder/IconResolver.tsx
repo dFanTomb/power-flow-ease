@@ -6,7 +6,7 @@ import {
   SelectAll,
   CheckBox,
   Circle,
-  FormatBold,
+  Numbers,
   TextSnippet,
   QuestionMark,
 } from '@mui/icons-material';
@@ -28,7 +28,7 @@ export const IconResolver = (iconName: string) => {
     case 'Button':
       return <Circle />;
     case 'Number':
-      return <FormatBold />;
+      return <Numbers />;
     case 'Textarea':
       return <TextSnippet />;
 
