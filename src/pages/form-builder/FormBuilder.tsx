@@ -10,15 +10,16 @@ import {
   Content,
   Item,
   Clone,
-  Handle,
+  // Handle,
   Kiosk,
-  ListContainer,
   Notice,
+  Row,
   IconButton,
 } from './components/styled-components.ts';
+import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
-import { IconResolver } from './IconResolver.tsx';
-import { move, copy, reorder, remove } from './utils';
+// import { IconResolver } from './IconResolver.tsx';
+import { RowItem } from './components/RowItem.tsx';
 import { State } from './types';
 
 export default function FormBuilder() {
@@ -28,9 +29,7 @@ export default function FormBuilder() {
   const handleAddTemplateModalOpen = useCallback(() => setAddTemplateModalOpen(true), []);
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
-  const [state, setState] = useState<State>({
-    [uuid()]: [],
-  });
+  const [state, setState] = useState<State>({ [uuid()]: [] });
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -49,7 +48,12 @@ export default function FormBuilder() {
       case 'ITEMS':
         setState((prevState: State) => ({
           ...prevState,
-          [destination.droppableId]: copy(ITEMS, prevState[destination.droppableId], source, destination),
+          [destination.droppableId]: copy(
+            Object.values(ITEMS),
+            prevState[destination.droppableId],
+            source,
+            destination,
+          ),
         }));
         break;
       default:
@@ -61,10 +65,9 @@ export default function FormBuilder() {
     }
   };
 
-  // For future create list component
-  // const addList = () => {
-  //   setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
-  // };
+  const addRow = () => {
+    setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
+  };
 
   const handleRemove = (listId: string, itemId: string) => {
     setState((prevState: State) => ({
@@ -85,64 +88,69 @@ export default function FormBuilder() {
         }
       />
       <AddTemplate open={addTemplateModalOpen} handleClose={handleAddTemplateModalClose} onSubmit={handleAddTemplate} />
-
+      <button onClick={addRow}>Add Row</button>
       <DragDropContext onDragEnd={onDragEnd}>
         <Content>
           <Droppable droppableId='ITEMS' isDropDisabled={true}>
             {(provided, snapshot) => (
               <Kiosk ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                {ITEMS.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided, snapshot) => (
-                      <React.Fragment>
-                        <Item
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          isdragging={snapshot.isDragging}
-                          style={provided.draggableProps.style}
-                        >
-                          {item.content}
-                        </Item>
-                        {snapshot.isDragging && <Clone isdragging={snapshot.isDragging}>{item.content}</Clone>}
-                      </React.Fragment>
-                    )}
-                  </Draggable>
-                ))}
+                {Object.keys(ITEMS).map((key, index) => {
+                  const typedKey = key as keyof typeof ITEMS;
+                  return (
+                    <Draggable key={ITEMS[typedKey].id} draggableId={ITEMS[typedKey].id} index={index}>
+                      {(provided, snapshot) => (
+                        <React.Fragment>
+                          <Item
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            isdragging={snapshot.isDragging}
+                            style={provided.draggableProps.style}
+                          >
+                            {ITEMS[typedKey].content}
+                          </Item>
+                          {snapshot.isDragging && (
+                            <Clone isdragging={snapshot.isDragging}>{ITEMS[typedKey].content}</Clone>
+                          )}
+                        </React.Fragment>
+                      )}
+                    </Draggable>
+                  );
+                })}
                 {provided.placeholder}
               </Kiosk>
             )}
           </Droppable>
           <Box>
-            {Object.keys(state).map((list, index) => (
-              <Droppable key={index} droppableId={list}>
+            {Object.keys(state).map((row, index) => (
+              <Droppable key={index} droppableId={row}>
                 {(provided, snapshot) => (
-                  <ListContainer ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                    {state[list].length
-                      ? state[list].map((listItem: { id: string; content: string }, index: number) => (
-                          <Draggable key={listItem.id} draggableId={listItem.id} index={index}>
-                            {(provided, snapshot) => (
-                              <Item
+                  <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
+                    {state[row].length
+                      ? state[row].map((rowItem: { id: string; content: string }, index: number) => (
+                          <Draggable key={rowItem.id} draggableId={rowItem.id} index={index}>
+                            {(provided) => (
+                              <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                isdragging={snapshot.isDragging}
-                                style={provided.draggableProps.style}
+                                // isdragging={snapshot.isDragging}
+                                style={{
+                                  width: '100%',
+                                  ...provided.draggableProps.style,
+                                }}
                               >
-                                <Handle {...provided.dragHandleProps}>{IconResolver(listItem.content)}</Handle>
-                                {listItem.content}
-                                <IconButton
-                                  onClick={() => handleRemove(list, listItem.id)}
-                                  style={{ marginLeft: 'auto' }}
-                                >
+                                {/* <Handle {...provided.dragHandleProps}>{IconResolver(rowItem.content)}</Handle> */}
+                                <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
+                                {/* <IconButton onClick={() => handleRemove(row, row.id)} style={{ marginLeft: 'auto' }}>
                                   <Delete />
-                                </IconButton>
-                              </Item>
+                                </IconButton> */}
+                              </div>
                             )}
                           </Draggable>
                         ))
                       : !provided.placeholder && <Notice>Drop items here</Notice>}
                     {provided.placeholder}
-                  </ListContainer>
+                  </Row>
                 )}
               </Droppable>
             ))}

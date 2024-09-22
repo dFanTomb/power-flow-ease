@@ -1,40 +1,50 @@
-import { v4 as uuid } from 'uuid';
-
-export const ITEMS = [
-  {
-    id: uuid(),
+export const ITEMS = {
+  'item-1': {
+    id: 'item-1',
     content: 'Text Field',
   },
-  {
-    id: uuid(),
+  'item-2': {
+    id: 'item-2',
     content: 'Email',
   },
-  {
-    id: uuid(),
+  'item-3': {
+    id: 'item-3',
     content: 'File',
   },
-  {
-    id: uuid(),
+  'item-4': {
+    id: 'item-4',
     content: 'Radio',
   },
-  {
-    id: uuid(),
+  'item-5': {
+    id: 'item-5',
     content: 'Select',
   },
-  {
-    id: uuid(),
+  'item-6': {
+    id: 'item-6',
     content: 'Checkbox',
   },
-  {
-    id: uuid(),
+  'item-7': {
+    id: 'item-7',
     content: 'Button',
   },
-  {
-    id: uuid(),
+  'item-8': {
+    id: 'item-8',
     content: 'Number',
   },
-  {
-    id: uuid(),
+  'item-9': {
+    id: 'item-9',
     content: 'Textarea',
   },
-] as const;
+};
+
+export const ROWS = {
+  'row-1': { id: 'row-1', items: [] },
+};
+
+const ROW_ORDER = ['row-1'];
+
+export const INITIAL_ITEM_DATA = {
+  items: ITEMS,
+  rows: ROWS,
+  rowOrder: ROW_ORDER,
+};

@@ -3,11 +3,16 @@ export type DroppableLocation = {
   index: number;
 };
 
-export type ItemType = {
+export type RowItemType = {
   id: string;
   content: string;
 };
 
 export type State = {
-  [key: string]: ItemType[];
+  [key: string]: RowItemType[];
+};
+
+export type Row = {
+  id: string;
+  items: never[];
 };
