@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import { DroppableLocation, ItemType } from './types';
 
-export const reorder = (list: ItemType[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
+export const reorder = (row: ItemType[], startIndex: number, endIndex: number) => {
+  const result = Array.from(row);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
@@ -19,6 +19,7 @@ export const copy = (
   const destClone = Array.from(destination);
 
   const item = sourceClone[droppableSource.index];
+  console.log('item', item);
 
   if (!item) return destClone;
   destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });

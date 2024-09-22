@@ -58,6 +58,39 @@ export const List = styled('div', {
 
 export const Kiosk = styled(List)(() => ({
   width: '200px',
+  height: 'fit-content',
+}));
+
+export const Row = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isdraggingover',
+})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
+  border: `1px ${isdraggingover ? 'dashed #000' : 'solid #ddd'}`,
+  padding: '0.5rem 0.5rem 0',
+  borderRadius: '3px',
+  fontFamily: 'sans-serif',
+  margin: '0.5rem 0.5rem 1.5rem',
+  minHeight: '57px',
+  height: 'fit-content',
+  width: '700px',
+  display: 'flex',
+  flexDirection: 'row',
+  columnGap: '10px',
+}));
+
+export const RowItem = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isdragging',
+})<{ isdragging?: boolean }>(({ isdragging }) => ({
+  display: 'flex',
+  userSelect: 'none',
+  padding: '0.5rem',
+  margin: '0 0 0.5rem 0',
+  alignItems: 'flex-start',
+  alignContent: 'flex-start',
+  lineHeight: 1.5,
+  borderRadius: '3px',
+  width: '100%',
+  background: '#fff',
+  border: `1px ${isdragging ? 'dashed #000' : 'solid #ddd'}`,
 }));
 
 export const ListContainer = styled(List)(() => ({
