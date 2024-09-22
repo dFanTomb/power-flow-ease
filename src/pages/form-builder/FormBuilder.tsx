@@ -69,12 +69,12 @@ export default function FormBuilder() {
     setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
   };
 
-  const handleRemove = (listId: string, itemId: string) => {
-    setState((prevState: State) => ({
-      ...prevState,
-      [listId]: remove(prevState[listId], itemId),
-    }));
-  };
+  // const handleRemove = (listId: string, itemId: string) => {
+  //   setState((prevState: State) => ({
+  //     ...prevState,
+  //     [listId]: remove(prevState[listId], itemId),
+  //   }));
+  // };
 
   return (
     <Container>
@@ -141,7 +141,10 @@ export default function FormBuilder() {
                               >
                                 {/* <Handle {...provided.dragHandleProps}>{IconResolver(rowItem.content)}</Handle> */}
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
-                                {/* <IconButton onClick={() => handleRemove(row, row.id)} style={{ marginLeft: 'auto' }}>
+                                {/* <IconButton
+                                  onClick={() => handleRemove(rowItem, rowItem.id)}
+                                  style={{ marginLeft: 'auto' }}
+                                >
                                   <Delete />
                                 </IconButton> */}
                               </div>
