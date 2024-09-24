@@ -9,6 +9,8 @@ import {
   Radio,
   RadioGroup,
   Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/base/Unstable_NumberInput';
 import { RowItemType } from '../types';
@@ -21,7 +23,7 @@ interface RowItemProps {
 }
 
 export const RowItem = ({ item, handleProps }: RowItemProps) => {
-  const [name, setName] = useState('Text Field');
+  const [name, setName] = useState('');
   const [selectedValue, setSelectedValue] = useState('a');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,10 +62,11 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
     switch (item.content) {
       case 'Text Field':
         return (
-          <FormControl>
+          <FormControl fullWidth>
             <TextField
               type='text'
               id='text-field'
+              label='Text Field'
               value={name}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setName(event.target.value);
@@ -73,8 +76,8 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         );
       case 'Email':
         return (
-          <FormControl>
-            <TextField label='Email' id='email' fullWidth />
+          <FormControl fullWidth>
+            <TextField label='Email' id='email' />
           </FormControl>
         );
       case 'File':
@@ -101,16 +104,22 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         );
       case 'Radio':
         return (
-          <FormControl>
-            <RadioGroup row id='radio-group'>
-              <Radio checked={selectedValue === 'a'} onChange={handleChange} value='a' name='radio-buttons' />
-              <Radio checked={selectedValue === 'b'} onChange={handleChange} value='b' name='radio-buttons' />
+          <FormControl fullWidth>
+            <RadioGroup
+              row
+              id='radio-group'
+              value={selectedValue}
+              onChange={handleChange}
+              sx={{ padding: '10px 10px' }}
+            >
+              <FormControlLabel value='a' control={<Radio />} label='True' />
+              <FormControlLabel value='b' control={<Radio />} label='False' />
             </RadioGroup>
           </FormControl>
         );
       case 'Select':
         return (
-          <FormControl sx={{ display: 'flex' }}>
+          <FormControl fullWidth>
             <InputLabel id='select-label'>Select</InputLabel>
             <Select labelId='select-label' id='select' value={value} label='Select' variant={'outlined'}>
               <MenuItem value={'1'}>Option one</MenuItem>
@@ -122,9 +131,9 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         );
       case 'Checkbox':
         return (
-          <FormControl>
-            <Checkbox inputProps={{ 'aria-label': 'checkbox' }} id='checkbox' />
-          </FormControl>
+          <FormGroup>
+            <FormControlLabel control={<Checkbox id='checkbox' />} label='Checkbox' />
+          </FormGroup>
         );
       case 'Button':
         return (
@@ -134,7 +143,6 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
             id='button'
             {...handleProps}
             onClick={(e) => {
-              console.log('handleProps', handleProps);
               e.preventDefault();
               e.stopPropagation();
             }}
@@ -164,7 +172,7 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
   };
 
   return (
-    <div style={{ padding: '1rem', border: '1px solid grey' }} {...handleProps}>
+    <div style={{ padding: '1rem' }} {...handleProps}>
       {renderItem(item)}
     </div>
   );

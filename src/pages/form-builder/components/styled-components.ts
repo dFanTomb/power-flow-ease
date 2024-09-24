@@ -67,10 +67,10 @@ export const Row = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover',
 })<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
   border: `1px ${isdraggingover ? 'dashed #000' : 'solid #ddd'}`,
-  padding: '0.5rem 0.5rem 0',
+  // padding: '0.5rem 0.5rem 0',
   borderRadius: '3px',
   fontFamily: 'sans-serif',
-  margin: '0.5rem 0.5rem 1.5rem',
+  margin: '0.5rem 0.5rem 0.5rem',
   minHeight: '57px',
   height: 'fit-content',
   width: '700px',
