@@ -9,10 +9,15 @@ export type RowItemType = {
 };
 
 export type State = {
-  [key: string]: RowItemType[];
+  [key: string]: RowItemType[] | ItemType[];
 };
 
 export type Row = {
   id: string;
   items: never[];
+};
+
+export type ItemType = {
+  id: string;
+  content: string;
 };

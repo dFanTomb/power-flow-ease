@@ -14,7 +14,7 @@ import {
   Kiosk,
   Notice,
   Row,
-  IconButton,
+  // IconButton,
 } from './components/styled-components.ts';
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
