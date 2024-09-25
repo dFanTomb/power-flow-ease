@@ -116,7 +116,6 @@ export default function FormBuilder() {
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                // isdragging={snapshot.isDragging}
                                 style={{
                                   width: '100%',
                                   ...provided.draggableProps.style,
