@@ -1,24 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import {
-  Content,
-  Item,
-  Clone,
-  // Handle,
-  Kiosk,
-  Notice,
-  Row,
-  // IconButton,
-} from './components/styled-components.ts';
-import { copy, move, reorder, remove } from './utils.ts';
+import { Content, Item, Clone, Kiosk, Notice, Row } from './components/styled-components.ts';
+import { copy, move, reorder } from './utils.ts';
 import { ITEMS } from './constants.ts';
-// import { IconResolver } from './IconResolver.tsx';
 import { RowItem } from './components/RowItem.tsx';
 import { State } from './types';
 
@@ -68,13 +58,6 @@ export default function FormBuilder() {
   const addRow = () => {
     setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
   };
-
-  // const handleRemove = (listId: string, itemId: string) => {
-  //   setState((prevState: State) => ({
-  //     ...prevState,
-  //     [listId]: remove(prevState[listId], itemId),
-  //   }));
-  // };
 
   return (
     <Container>
@@ -139,14 +122,7 @@ export default function FormBuilder() {
                                   ...provided.draggableProps.style,
                                 }}
                               >
-                                {/* <Handle {...provided.dragHandleProps}>{IconResolver(rowItem.content)}</Handle> */}
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
-                                {/* <IconButton
-                                  onClick={() => handleRemove(rowItem, rowItem.id)}
-                                  style={{ marginLeft: 'auto' }}
-                                >
-                                  <Delete />
-                                </IconButton> */}
                               </div>
                             )}
                           </Draggable>

@@ -19,7 +19,6 @@ export const Item = styled('div', {
   userSelect: 'none',
   padding: '0.5rem',
   margin: '2px 0',
-  // lineHeight: 1.5,
   borderRadius: '3px',
   background: '#fff',
   border: `1px ${isdragging ? 'dashed #000' : 'solid #ddd'}`,
@@ -35,7 +34,6 @@ export const Clone = styled(Item, {
 
 export const Handle = styled('div')(() => ({
   display: 'flex',
-  // alignItems: 'center',
   alignContent: 'center',
   userSelect: 'none',
   margin: '-0.5rem 0.5rem -0.5rem -0.5rem',
@@ -67,7 +65,6 @@ export const Row = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover',
 })<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
   border: `1px ${isdraggingover ? 'dashed #000' : 'solid #ddd'}`,
-  // padding: '0.5rem 0.5rem 0',
   borderRadius: '3px',
   fontFamily: 'sans-serif',
   margin: '0.5rem 0.5rem 0.5rem',
