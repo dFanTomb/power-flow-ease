@@ -6,8 +6,8 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import { Content, Item, Clone, Kiosk, Notice, Row } from './components/styled-components.ts';
-import { copy, move, reorder } from './utils.ts';
+import { Content, Item, Clone, Kiosk, Notice, Row, TrashZone } from './components/styled-components.ts';
+import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
 import { State } from './types';
@@ -22,6 +22,7 @@ export default function FormBuilder() {
   const [state, setState] = useState<State>({ [uuid()]: [] });
 
   const onDragEnd = (result: DropResult) => {
+    console.log('Drag result:', result);
     const { source, destination } = result;
 
     if (!destination) {
@@ -46,6 +47,19 @@ export default function FormBuilder() {
           ),
         }));
         break;
+      case 'TRASH': {
+        const sourceItems = state[source.droppableId] || [];
+        const removedItemId = sourceItems[source.index]?.id;
+
+        if (removedItemId) {
+          setState((prevState: State) => ({
+            ...prevState,
+            [source.droppableId]: remove(prevState[source.droppableId], removedItemId),
+          }));
+        }
+
+        break;
+      }
       default:
         setState((prevState: State) => ({
           ...prevState,
@@ -134,6 +148,14 @@ export default function FormBuilder() {
             ))}
           </Box>
         </Content>
+        <Droppable droppableId='TRASH'>
+          {(provided, snapshot) => (
+            <TrashZone ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
+              <p>Trash</p>
+              {provided.placeholder}
+            </TrashZone>
+          )}
+        </Droppable>
       </DragDropContext>
     </Container>
   );
