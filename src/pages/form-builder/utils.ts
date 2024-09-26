@@ -44,7 +44,3 @@ export const move = (
 
   return result;
 };
-
-export const remove = (list: ItemType[], id: string): ItemType[] => {
-  return list.filter((item) => item.id !== id);
-};
