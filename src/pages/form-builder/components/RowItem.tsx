@@ -11,6 +11,7 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
+  SelectChangeEvent,
 } from '@mui/material';
 import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/base/Unstable_NumberInput';
 import { RowItemType } from '../types';
@@ -24,10 +25,12 @@ interface RowItemProps {
 
 export const RowItem = ({ item, handleProps }: RowItemProps) => {
   const [name, setName] = useState('');
-  const [selectedValue, setSelectedValue] = useState('a');
+  const [radioValue, setRadioValue] = useState('a');
+  const [numberValue, setNumberValue] = useState<number | null>(null);
+  const [selectValue, setSelectValue] = useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+  const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRadioValue(event.target.value);
   };
 
   const NumberInput = forwardRef(function CustomNumberInput(
@@ -56,7 +59,9 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
     );
   });
 
-  const [value, setValue] = useState<number | null>(null);
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setSelectValue(event.target.value as string);
+  };
 
   const renderItem = (item: RowItemType) => {
     switch (item.content) {
@@ -108,8 +113,8 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
             <RadioGroup
               row
               id='radio-group'
-              value={selectedValue}
-              onChange={handleChange}
+              value={radioValue}
+              onChange={handleChangeRadio}
               sx={{ padding: '10px 10px' }}
             >
               <FormControlLabel value='a' control={<Radio />} label='True' />
@@ -121,7 +126,14 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         return (
           <FormControl fullWidth>
             <InputLabel id='select-label'>Select</InputLabel>
-            <Select labelId='select-label' id='select' value={value} label='Select' variant={'outlined'}>
+            <Select
+              labelId='select-label'
+              id='select'
+              value={selectValue}
+              label='Select'
+              onChange={handleChangeSelect}
+              variant={'outlined'}
+            >
               <MenuItem value={'1'}>Option one</MenuItem>
               <MenuItem value={'2'}>Option two</MenuItem>
               <MenuItem value={'3'}>Option three</MenuItem>
@@ -129,6 +141,7 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
             </Select>
           </FormControl>
         );
+
       case 'Checkbox':
         return (
           <FormGroup>
@@ -156,8 +169,8 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
             aria-label='number-input'
             placeholder='Type a number…'
             id='number-input'
-            value={value}
-            onChange={(_event, val) => setValue(val)}
+            value={numberValue}
+            onChange={(_event, val) => setNumberValue(val)}
           />
         );
       case 'Textarea':

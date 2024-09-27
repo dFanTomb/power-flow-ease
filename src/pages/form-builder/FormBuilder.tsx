@@ -29,6 +29,14 @@ export default function FormBuilder() {
       return;
     }
 
+    if (destination.droppableId === 'TRASH') {
+      setState((prevState: State) => ({
+        ...prevState,
+        [source.droppableId]: remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id),
+      }));
+      return;
+    }
+
     switch (source.droppableId) {
       case destination.droppableId:
         setState((prevState: State) => ({
@@ -36,6 +44,7 @@ export default function FormBuilder() {
           [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
         }));
         break;
+
       case 'ITEMS':
         setState((prevState: State) => ({
           ...prevState,
@@ -47,19 +56,7 @@ export default function FormBuilder() {
           ),
         }));
         break;
-      case 'TRASH': {
-        const sourceItems = state[source.droppableId] || [];
-        const removedItemId = sourceItems[source.index]?.id;
 
-        if (removedItemId) {
-          setState((prevState: State) => ({
-            ...prevState,
-            [source.droppableId]: remove(prevState[source.droppableId], removedItemId),
-          }));
-        }
-
-        break;
-      }
       default:
         setState((prevState: State) => ({
           ...prevState,
@@ -151,7 +148,7 @@ export default function FormBuilder() {
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (
             <TrashZone ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-              <p>Trash</p>
+              Trash
               {provided.placeholder}
             </TrashZone>
           )}
