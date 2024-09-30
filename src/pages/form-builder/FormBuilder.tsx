@@ -66,8 +66,6 @@ export default function FormBuilder() {
     }
   };
 
-  // const [hidden, setHidden] = useState(true);
-
   const addRow = () => {
     setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
   };
@@ -134,6 +132,9 @@ export default function FormBuilder() {
                                   ...provided.draggableProps.style,
                                 }}
                               >
+                                {/* {snapshot.isDraggingOver && (
+
+                                )} */}
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
                               </div>
                             )}
