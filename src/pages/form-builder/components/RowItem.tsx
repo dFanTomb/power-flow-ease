@@ -15,10 +15,9 @@ import {
 } from '@mui/material';
 import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/base/Unstable_NumberInput';
 import { RowItemType } from '../types';
-import { Handle, StyledButton, StyledInputElement, StyledInputRoot } from './styled-components';
+import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 // import { IconResolver } from '../IconResolver';
-import { styled } from '@mui/material/styles';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
 interface RowItemProps {
@@ -207,9 +206,3 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
     </RowContent>
   );
 };
-
-const RowContent = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-}));

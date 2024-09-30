@@ -93,6 +93,12 @@ export const RowItem = styled('div', {
   border: `1px ${isdragging ? 'dashed #000' : 'solid #ddd'}`,
 }));
 
+export const RowContent = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+}));
+
 export const ListContainer = styled(List)(() => ({
   margin: '0.5rem 0.5rem 1.5rem',
   minHeight: '400px',
