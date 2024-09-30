@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Add, Delete } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
@@ -148,7 +148,7 @@ export default function FormBuilder() {
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (
             <TrashZone ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-              Trash
+              <Delete />
               {provided.placeholder}
             </TrashZone>
           )}

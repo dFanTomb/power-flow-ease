@@ -32,18 +32,18 @@ export const Clone = styled(Item, {
   },
 }));
 
-export const Handle = styled('div')(() => ({
-  display: 'flex',
-  alignContent: 'center',
-  userSelect: 'none',
-  margin: '-0.5rem 0.5rem -0.5rem -0.5rem',
-  padding: '0.5rem',
-  lineHeight: 1.5,
-  borderRadius: '3px 0 0 3px',
-  background: '#fff',
-  borderRight: '1px solid #ddd',
-  color: '#000',
-}));
+// export const Handle = styled('div')(() => ({
+//   display: 'flex',
+//   alignContent: 'center',
+//   userSelect: 'none',
+//   margin: '-0.5rem 0.5rem -0.5rem -0.5rem',
+//   padding: '0.5rem',
+//   lineHeight: 1.5,
+//   borderRadius: '3px 0 0 3px',
+//   background: '#fff',
+//   borderRight: '1px solid #ddd',
+//   color: '#000',
+// }));
 
 export const List = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover',
@@ -230,13 +230,11 @@ export const TrashZone = styled('div', {
 })<{ isdraggingover?: boolean }>(() => ({
   width: '100px',
   height: '100px',
-  background: 'rgba(255, 0, 0, 0.1)',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   border: '2px dashed red',
   borderRadius: '8px',
-  color: 'red',
   fontSize: '1.2rem',
   textAlign: 'center',
   margin: '0 auto',
