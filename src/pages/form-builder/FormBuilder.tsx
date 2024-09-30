@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import { Content, Item, Clone, Kiosk, Notice, Row, TrashZone } from './components/styled-components.ts';
+import { Content, Item, Clone, Kiosk, Notice, Row, TrashZone, DeleteIcon } from './components/styled-components.ts';
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
@@ -65,6 +65,8 @@ export default function FormBuilder() {
         break;
     }
   };
+
+  // const [hidden, setHidden] = useState(true);
 
   const addRow = () => {
     setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
@@ -148,7 +150,7 @@ export default function FormBuilder() {
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (
             <TrashZone ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-              <Delete />
+              {snapshot.isDraggingOver && <DeleteIcon />}
               {provided.placeholder}
             </TrashZone>
           )}

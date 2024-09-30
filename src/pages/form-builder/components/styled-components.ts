@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { numberInputClasses } from '@mui/base/Unstable_NumberInput';
 import { grey } from '@mui/material/colors';
+import { Delete } from '@mui/icons-material';
 
 export const Content = styled('div')(() => ({
   marginRight: '200px',
@@ -31,19 +32,6 @@ export const Clone = styled(Item, {
     transform: 'none !important',
   },
 }));
-
-// export const Handle = styled('div')(() => ({
-//   display: 'flex',
-//   alignContent: 'center',
-//   userSelect: 'none',
-//   margin: '-0.5rem 0.5rem -0.5rem -0.5rem',
-//   padding: '0.5rem',
-//   lineHeight: 1.5,
-//   borderRadius: '3px 0 0 3px',
-//   background: '#fff',
-//   borderRight: '1px solid #ddd',
-//   color: '#000',
-// }));
 
 export const List = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover',
@@ -107,14 +95,6 @@ export const Notice = styled('div')(() => ({
   border: '1px solid transparent',
   lineHeight: 1.5,
   color: '#aaa',
-}));
-
-export const IconButton = styled('div')(() => ({
-  paddingRight: '10px',
-  color: 'gray',
-  '&:hover': {
-    color: 'lightgray',
-  },
 }));
 
 export const StyledInputRoot = styled('div')(
@@ -233,9 +213,15 @@ export const TrashZone = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  border: '2px dashed red',
   borderRadius: '8px',
   fontSize: '1.2rem',
   textAlign: 'center',
   margin: '0 auto',
+  border: '2px dashed lightgray',
 }));
+
+export const DeleteIcon = styled(Delete)({
+  position: 'absolute',
+  fontSize: '30px',
+  color: 'gray',
+});
