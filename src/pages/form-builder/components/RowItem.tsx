@@ -17,7 +17,6 @@ import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/
 import { RowItemType } from '../types';
 import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
-// import { IconResolver } from '../IconResolver';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
 interface RowItemProps {

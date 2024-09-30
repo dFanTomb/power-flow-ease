@@ -132,9 +132,6 @@ export default function FormBuilder() {
                                   ...provided.draggableProps.style,
                                 }}
                               >
-                                {/* {snapshot.isDraggingOver && (
-
-                                )} */}
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
                               </div>
                             )}
