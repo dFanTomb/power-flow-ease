@@ -66,8 +66,6 @@ export default function FormBuilder() {
     }
   };
 
-  // const [hidden, setHidden] = useState(true);
-
   const addRow = () => {
     setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
   };
