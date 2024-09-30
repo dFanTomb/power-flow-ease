@@ -21,3 +21,7 @@ export type ItemType = {
   id: string;
   content: string;
 };
+
+export type TrashZoneProps = {
+  isdraggingover: boolean;
+};
