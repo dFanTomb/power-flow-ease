@@ -82,7 +82,7 @@ export default function FormBuilder() {
         }
       />
       <AddTemplate open={addTemplateModalOpen} handleClose={handleAddTemplateModalClose} onSubmit={handleAddTemplate} />
-      <button onClick={addRow}>Add Row</button>
+      {/* <Button onClick={addRow}>Add Row</Button> */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Content>
           <Droppable droppableId='ITEMS' isDropDisabled={true}>
