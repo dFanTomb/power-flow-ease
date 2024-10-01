@@ -198,7 +198,17 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
     >
       {isHovered && (
         <Handle {...handleProps}>
-          <DragIndicatorOutlinedIcon />
+          <DragIndicatorOutlinedIcon
+            sx={{
+              fontSize: '36px',
+              margin: '0 auto',
+              color: 'gray',
+              height: '53px',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              boxShadow: '1px 1px 0px lightgray',
+            }}
+          />
         </Handle>
       )}
       {renderItem(item)}
