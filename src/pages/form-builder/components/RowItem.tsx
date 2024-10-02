@@ -146,8 +146,8 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
 
       case 'Checkbox':
         return (
-          <FormGroup>
-            <FormControlLabel control={<Checkbox id='checkbox' />} label='Checkbox' />
+          <FormGroup sx={{ display: 'flex', alignContent: 'center' }}>
+            <FormControlLabel control={<Checkbox id='checkbox' />} label='Checkbox' sx={{ marginLeft: '2px' }} />
           </FormGroup>
         );
       case 'Button':
@@ -177,8 +177,8 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         );
       case 'Textarea':
         return (
-          <FormControl sx={{ display: 'flex' }}>
-            <TextField label='Textarea' type='text' id='text-area' multiline fullWidth />
+          <FormControl sx={{ display: 'flex' }} fullWidth>
+            <TextField label='Textarea' type='text' id='text-area' multiline />
           </FormControl>
         );
       default:

@@ -20,9 +20,9 @@ export default function FormBuilder() {
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
   const [state, setState] = useState<State>({ [uuid()]: [] });
+  const [showRowPlaceholder, setShowRowPlaceholder] = useState<boolean>(false);
 
   const onDragEnd = (result: DropResult) => {
-    console.log('Drag result:', result);
     const { source, destination } = result;
 
     if (!destination) {
@@ -30,9 +30,24 @@ export default function FormBuilder() {
     }
 
     if (destination.droppableId === 'TRASH') {
+      setState((prevState: State) => {
+        const newState = { ...prevState };
+        const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
+
+        if (currentRowItems.length === 0) {
+          delete newState[source.droppableId];
+        } else {
+          newState[source.droppableId] = currentRowItems;
+        }
+        return newState;
+      });
+      return;
+    }
+
+    if (destination.droppableId === 'PLACEHOLDER_ROW') {
       setState((prevState: State) => ({
         ...prevState,
-        [source.droppableId]: remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id),
+        [uuid()]: copy(Object.values(ITEMS), [], source, destination),
       }));
       return;
     }
@@ -66,10 +81,6 @@ export default function FormBuilder() {
     }
   };
 
-  const addRow = () => {
-    setState((prevState: State) => ({ ...prevState, [uuid()]: [] }));
-  };
-
   return (
     <Container>
       <PageHeader
@@ -82,7 +93,6 @@ export default function FormBuilder() {
         }
       />
       <AddTemplate open={addTemplateModalOpen} handleClose={handleAddTemplateModalClose} onSubmit={handleAddTemplate} />
-      {/* <Button onClick={addRow}>Add Row</Button> */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Content>
           <Droppable droppableId='ITEMS' isDropDisabled={true}>
@@ -143,6 +153,30 @@ export default function FormBuilder() {
                 )}
               </Droppable>
             ))}
+            <Box>
+              <Droppable droppableId='PLACEHOLDER_ROW'>
+                {(provided, snapshot) => (
+                  <div
+                    onMouseEnter={() => {
+                      setShowRowPlaceholder(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShowRowPlaceholder(false);
+                    }}
+                    ref={provided.innerRef}
+                    style={{
+                      marginTop: '5px',
+                      height: '50px',
+                      width: '100%',
+                      border: showRowPlaceholder ? '' : 'none',
+                    }}
+                  >
+                    {snapshot.isDraggingOver}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Box>
           </Box>
         </Content>
         <Droppable droppableId='TRASH'>
