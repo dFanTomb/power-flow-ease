@@ -71,6 +71,7 @@ export const Row = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   columnGap: '10px',
+  alignItems: 'center',
 }));
 
 export const RowItem = styled('div', {
@@ -115,6 +116,7 @@ export const Notice = styled('div')(() => ({
 
 export const StyledInputRoot = styled('div')(
   ({ theme }) => `
+  width: 100%;
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 400;
   border-radius: 8px;

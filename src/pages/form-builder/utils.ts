@@ -19,7 +19,6 @@ export const copy = (
   const destClone = Array.from(destination);
 
   const item = sourceClone[droppableSource.index];
-  // console.log('item', item);
 
   if (!item) return destClone;
   destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
@@ -46,6 +45,5 @@ export const move = (
 };
 
 export const remove = (list: ItemType[], id: string): ItemType[] => {
-  // console.log('REMOVE item with ID:', id);
   return list.filter((item) => item.id !== id);
 };
