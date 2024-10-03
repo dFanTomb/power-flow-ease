@@ -36,6 +36,8 @@ export default function FormBuilder() {
 
     if (!destination) return;
 
+    if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
+
     if (destination.droppableId === 'TRASH') {
       setState((prevState: State) => {
         const newState = { ...prevState };
