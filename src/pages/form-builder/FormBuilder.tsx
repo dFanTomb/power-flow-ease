@@ -54,10 +54,21 @@ export default function FormBuilder() {
     }
 
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
-      setState((prevState: State) => ({
-        ...prevState,
-        [uuid()]: copy(Object.values(ITEMS), [], source, destination),
-      }));
+      if (source.droppableId === 'ITEMS') {
+        setState((prevState: State) => ({
+          ...prevState,
+          [uuid()]: copy(Object.values(ITEMS), [], source, destination),
+        }));
+        return;
+      }
+      setState((prevState: State) => {
+        const newState = { ...prevState };
+        const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
+
+        newState[source.droppableId] = currentRowItems;
+        newState[uuid()] = copy([prevState[source.droppableId][source.index]], [], source, destination);
+        return newState;
+      });
       return;
     }
 
