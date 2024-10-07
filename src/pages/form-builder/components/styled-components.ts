@@ -243,3 +243,12 @@ export const DeleteIcon = styled(Delete)({
   fontSize: '30px',
   color: 'gray',
 });
+
+export const NewRow = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isdraggingover',
+})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
+  border: `1px ${isdraggingover ? 'dashed #000' : 'none'}`,
+  margin: '8px',
+  height: '50px',
+  width: '700px',
+}));

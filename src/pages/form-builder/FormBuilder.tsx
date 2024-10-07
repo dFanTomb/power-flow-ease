@@ -6,7 +6,17 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import { Content, Item, Clone, Kiosk, Notice, Row, TrashZone, DeleteIcon } from './components/styled-components.ts';
+import {
+  Content,
+  Item,
+  Clone,
+  Kiosk,
+  Notice,
+  Row,
+  TrashZone,
+  DeleteIcon,
+  NewRow,
+} from './components/styled-components.ts';
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
@@ -20,14 +30,13 @@ export default function FormBuilder() {
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
   const [state, setState] = useState<State>({ [uuid()]: [] });
-  const [showRowPlaceholder, setShowRowPlaceholder] = useState<boolean>(false);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    if (!destination) {
-      return;
-    }
+    if (!destination) return;
+
+    if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
 
     if (destination.droppableId === 'TRASH') {
       setState((prevState: State) => {
@@ -58,6 +67,7 @@ export default function FormBuilder() {
           ...prevState,
           [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
         }));
+
         break;
 
       case 'ITEMS':
@@ -156,24 +166,10 @@ export default function FormBuilder() {
             <Box>
               <Droppable droppableId='PLACEHOLDER_ROW'>
                 {(provided, snapshot) => (
-                  <div
-                    onMouseEnter={() => {
-                      setShowRowPlaceholder(true);
-                    }}
-                    onMouseLeave={() => {
-                      setShowRowPlaceholder(false);
-                    }}
-                    ref={provided.innerRef}
-                    style={{
-                      marginTop: '5px',
-                      height: '50px',
-                      width: '100%',
-                      border: showRowPlaceholder ? '' : 'none',
-                    }}
-                  >
+                  <NewRow ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
                     {snapshot.isDraggingOver}
                     {provided.placeholder}
-                  </div>
+                  </NewRow>
                 )}
               </Droppable>
             </Box>
