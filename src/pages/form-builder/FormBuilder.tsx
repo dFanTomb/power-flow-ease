@@ -34,6 +34,7 @@ export default function FormBuilder() {
   useEffect(() => {
     setRows((prevRow) => {
       const rowKeys = Object.keys(prevRow);
+      console.log('rowKeys of rows:', rowKeys);
 
       if (rowKeys.length === 1) return prevRow;
 
@@ -44,7 +45,7 @@ export default function FormBuilder() {
 
       return Object.keys(newState).length > 0 ? newState : prevRow;
     });
-  }, [rows]);
+  }, [Object.keys(rows).length]);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -69,6 +70,7 @@ export default function FormBuilder() {
     }
 
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
+      console.log('Create new row with ID:', destination.droppableId === 'PLACEHOLDER_ROW');
       if (source.droppableId === 'ITEMS') {
         setRows((prevRow: State) => ({
           ...prevRow,
@@ -110,7 +112,6 @@ export default function FormBuilder() {
         }));
         break;
     }
-    console.log('rows:', rows);
   };
 
   return (
