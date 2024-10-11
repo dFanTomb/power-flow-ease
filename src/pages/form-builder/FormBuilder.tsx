@@ -32,18 +32,18 @@ export default function FormBuilder() {
   const [rows, setRows] = useState<State>({ [uuid()]: [] });
 
   useEffect(() => {
-    setRows((prevRow) => {
-      const rowKeys = Object.keys(prevRow);
+    setRows((prevState) => {
+      const rowKeys = Object.keys(prevState);
       console.log('rowKeys of rows:', rowKeys);
 
-      if (rowKeys.length === 1) return prevRow;
+      if (rowKeys.length === 1) return prevState;
 
       const newState = rowKeys
-        .map((rowKey) => (prevRow[rowKey].length > 0 ? { [rowKey]: prevRow[rowKey] } : null))
+        .map((rowKey) => (prevState[rowKey].length > 0 ? { [rowKey]: prevState[rowKey] } : null))
         .filter((item): item is { [key: string]: RowItemType[] | ItemType[] } => item !== null)
         .reduce((accumulator, currentValue) => ({ ...accumulator, ...currentValue }), {});
 
-      return Object.keys(newState).length > 0 ? newState : prevRow;
+      return Object.keys(newState).length > 0 ? newState : prevState;
     });
   }, [Object.keys(rows).length]);
 
@@ -55,9 +55,9 @@ export default function FormBuilder() {
     if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
 
     if (destination.droppableId === 'TRASH') {
-      setRows((prevRow: State) => {
-        const newState = { ...prevRow };
-        const currentRowItems = remove(prevRow[source.droppableId], prevRow[source.droppableId][source.index].id);
+      setRows((prevState: State) => {
+        const newState = { ...prevState };
+        const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
         if (currentRowItems.length === 0) {
           delete newState[source.droppableId];
@@ -72,18 +72,18 @@ export default function FormBuilder() {
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
       console.log('Create new row with ID:', destination.droppableId === 'PLACEHOLDER_ROW');
       if (source.droppableId === 'ITEMS') {
-        setRows((prevRow: State) => ({
-          ...prevRow,
+        setRows((prevState: State) => ({
+          ...prevState,
           [uuid()]: copy(Object.values(ITEMS), [], source, destination),
         }));
         return;
       }
-      setRows((prevRow: State) => {
-        const newState = { ...prevRow };
-        const currentRowItems = remove(prevRow[source.droppableId], prevRow[source.droppableId][source.index].id);
+      setRows((prevState: State) => {
+        const newState = { ...prevState };
+        const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
         newState[source.droppableId] = currentRowItems;
-        newState[uuid()] = copy([prevRow[source.droppableId][source.index]], [], source, destination);
+        newState[uuid()] = copy([prevState[source.droppableId][source.index]], [], source, destination);
         return newState;
       });
       return;
@@ -91,24 +91,29 @@ export default function FormBuilder() {
 
     switch (source.droppableId) {
       case destination.droppableId:
-        setRows((prevRow: State) => ({
-          ...prevRow,
-          [destination.droppableId]: reorder(prevRow[source.droppableId], source.index, destination.index),
+        setRows((prevState: State) => ({
+          ...prevState,
+          [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
         }));
 
         break;
 
       case 'ITEMS':
-        setRows((prevRow: State) => ({
-          ...prevRow,
-          [destination.droppableId]: copy(Object.values(ITEMS), prevRow[destination.droppableId], source, destination),
+        setRows((prevState: State) => ({
+          ...prevState,
+          [destination.droppableId]: copy(
+            Object.values(ITEMS),
+            prevState[destination.droppableId],
+            source,
+            destination,
+          ),
         }));
         break;
 
       default:
-        setRows((prevRow: State) => ({
-          ...prevRow,
-          ...move(prevRow[source.droppableId], prevRow[destination.droppableId], source, destination),
+        setRows((prevState: State) => ({
+          ...prevState,
+          ...move(prevState[source.droppableId], prevState[destination.droppableId], source, destination),
         }));
         break;
     }
