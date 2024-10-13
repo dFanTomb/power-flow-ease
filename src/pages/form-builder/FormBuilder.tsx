@@ -33,7 +33,6 @@ export default function FormBuilder() {
 
   const cleanRows = (prevState: State) => {
     const rowKeys = Object.keys(prevState);
-    console.log('rowKeys of rows:', rowKeys);
 
     if (rowKeys.length === 1) return prevState;
 
@@ -69,7 +68,6 @@ export default function FormBuilder() {
     }
 
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
-      console.log('Create new row with ID:', destination.droppableId === 'PLACEHOLDER_ROW');
       if (source.droppableId === 'ITEMS') {
         setRows((prevState: State) =>
           cleanRows({
