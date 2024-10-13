@@ -20,7 +20,7 @@ import {
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
-import { State } from './types';
+import { ItemType, RowItemType, State } from './types';
 
 export default function FormBuilder() {
   const [addTemplateModalOpen, setAddTemplateModalOpen] = useState<boolean>(false);
@@ -29,7 +29,21 @@ export default function FormBuilder() {
   const handleAddTemplateModalOpen = useCallback(() => setAddTemplateModalOpen(true), []);
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
-  const [state, setState] = useState<State>({ [uuid()]: [] });
+  const [rows, setRows] = useState<State>({ [uuid()]: [] });
+
+  const cleanRows = (prevState: State) => {
+    const rowKeys = Object.keys(prevState);
+    console.log('rowKeys of rows:', rowKeys);
+
+    if (rowKeys.length === 1) return prevState;
+
+    const newState = rowKeys
+      .map((rowKey) => (prevState[rowKey].length > 0 ? { [rowKey]: prevState[rowKey] } : null))
+      .filter((item): item is { [key: string]: RowItemType[] | ItemType[] } => item !== null)
+      .reduce((accumulator, currentValue) => ({ ...accumulator, ...currentValue }), {});
+
+    return Object.keys(newState).length > 0 ? newState : prevState;
+  };
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -39,7 +53,7 @@ export default function FormBuilder() {
     if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
 
     if (destination.droppableId === 'TRASH') {
-      setState((prevState: State) => {
+      setRows((prevState: State) => {
         const newState = { ...prevState };
         const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
@@ -48,56 +62,68 @@ export default function FormBuilder() {
         } else {
           newState[source.droppableId] = currentRowItems;
         }
-        return newState;
+
+        return cleanRows(newState);
       });
       return;
     }
 
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
+      console.log('Create new row with ID:', destination.droppableId === 'PLACEHOLDER_ROW');
       if (source.droppableId === 'ITEMS') {
-        setState((prevState: State) => ({
-          ...prevState,
-          [uuid()]: copy(Object.values(ITEMS), [], source, destination),
-        }));
+        setRows((prevState: State) =>
+          cleanRows({
+            ...prevState,
+            [uuid()]: copy(Object.values(ITEMS), [], source, destination),
+          }),
+        );
+
         return;
       }
-      setState((prevState: State) => {
+
+      setRows((prevState: State) => {
         const newState = { ...prevState };
         const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
         newState[source.droppableId] = currentRowItems;
         newState[uuid()] = copy([prevState[source.droppableId][source.index]], [], source, destination);
-        return newState;
+
+        return cleanRows(newState);
       });
       return;
     }
 
     switch (source.droppableId) {
       case destination.droppableId:
-        setState((prevState: State) => ({
-          ...prevState,
-          [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
-        }));
-
+        setRows((prevState: State) =>
+          cleanRows({
+            ...prevState,
+            [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
+          }),
+        );
         break;
 
       case 'ITEMS':
-        setState((prevState: State) => ({
-          ...prevState,
-          [destination.droppableId]: copy(
-            Object.values(ITEMS),
-            prevState[destination.droppableId],
-            source,
-            destination,
-          ),
-        }));
+        setRows((prevState: State) =>
+          cleanRows({
+            ...prevState,
+            [destination.droppableId]: copy(
+              Object.values(ITEMS),
+              prevState[destination.droppableId],
+              source,
+              destination,
+            ),
+          }),
+        );
         break;
 
       default:
-        setState((prevState: State) => ({
-          ...prevState,
-          ...move(prevState[source.droppableId], prevState[destination.droppableId], source, destination),
-        }));
+        setRows((prevState: State) =>
+          cleanRows({
+            ...prevState,
+            ...move(prevState[source.droppableId], prevState[destination.droppableId], source, destination),
+          }),
+        );
         break;
     }
   };
@@ -147,12 +173,12 @@ export default function FormBuilder() {
             )}
           </Droppable>
           <Box>
-            {Object.keys(state).map((row, index) => (
+            {Object.keys(rows).map((row, index) => (
               <Droppable key={index} droppableId={row}>
                 {(provided, snapshot) => (
                   <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                    {state[row].length
-                      ? state[row].map((rowItem: { id: string; content: string }, index: number) => (
+                    {rows[row].length
+                      ? rows[row].map((rowItem: { id: string; content: string }, index: number) => (
                           <Draggable key={rowItem.id} draggableId={rowItem.id} index={index}>
                             {(provided) => (
                               <div
