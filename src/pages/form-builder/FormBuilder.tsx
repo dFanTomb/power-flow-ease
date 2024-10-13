@@ -201,8 +201,12 @@ export default function FormBuilder() {
             <Box>
               <Droppable droppableId='PLACEHOLDER_ROW'>
                 {(provided, snapshot) => (
-                  <NewRow ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                    {snapshot.isDraggingOver}
+                  <NewRow
+                    ref={provided.innerRef}
+                    isdraggingover={snapshot.isDraggingOver}
+                    hasItems={Object.keys(rows).length > 0}
+                  >
+                    {snapshot.isDraggingOver ? true : Object.keys(rows).length === 0}
                     {provided.placeholder}
                   </NewRow>
                 )}

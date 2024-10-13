@@ -245,10 +245,11 @@ export const DeleteIcon = styled(Delete)({
 });
 
 export const NewRow = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isdraggingover',
-})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
-  border: `1px ${isdraggingover ? 'dashed #000' : 'none'}`,
+  shouldForwardProp: (prop) => prop !== 'isdraggingover' && prop !== 'hasItems',
+})<{ isdraggingover?: boolean; hasItems?: boolean }>(({ isdraggingover, hasItems }) => ({
+  border: `${isdraggingover ? '1px dashed #000' : !hasItems ? '1px solid #ddd' : 'none'}`,
+  borderRadius: '3px',
   margin: '8px',
-  height: '50px',
+  height: '57px',
   width: '700px',
 }));
