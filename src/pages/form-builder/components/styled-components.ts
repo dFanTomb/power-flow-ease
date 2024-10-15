@@ -40,6 +40,7 @@ export const Handle = styled('div')(() => ({
   background: '#fff',
   borderRight: '1px solid #ddd',
   color: '#000',
+  border: '1px dashed green',
 }));
 
 export const List = styled('div', {
@@ -72,6 +73,7 @@ export const Row = styled('div', {
   flexDirection: 'row',
   columnGap: '10px',
   alignItems: 'center',
+  border: '1px dashed red',
 }));
 
 export const RowItem = styled('div', {
@@ -95,6 +97,8 @@ export const RowContent = styled('div')(() => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: 'none',
+  border: '1px dashed blue',
+  flexGrow: '1',
 }));
 
 export const ListContainer = styled(List)(() => ({

@@ -16,11 +16,13 @@ import {
   TrashZone,
   DeleteIcon,
   NewRow,
+  Handle,
 } from './components/styled-components.ts';
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
 import { ItemType, RowItemType, State } from './types';
+import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
 export default function FormBuilder() {
   const [addTemplateModalOpen, setAddTemplateModalOpen] = useState<boolean>(false);
@@ -183,10 +185,25 @@ export default function FormBuilder() {
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
                                   width: '100%',
                                   ...provided.draggableProps.style,
                                 }}
                               >
+                                <Handle {...provided.dragHandleProps}>
+                                  <DragIndicatorOutlinedIcon
+                                    sx={{
+                                      fontSize: '36px',
+                                      margin: '0 auto',
+                                      color: 'gray',
+                                      height: '53px',
+                                      border: '1px solid #ddd',
+                                      borderRadius: '4px',
+                                      boxShadow: '1px 1px 0px lightgray',
+                                    }}
+                                  />
+                                </Handle>
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
                               </div>
                             )}
