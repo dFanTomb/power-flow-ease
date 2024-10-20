@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import { DroppableLocation, ItemType } from './types';
+import { DroppableLocation, RowItemType } from './types';
 
-export const reorder = (row: ItemType[], startIndex: number, endIndex: number) => {
+export const reorder = (row: RowItemType[], startIndex: number, endIndex: number) => {
   const result = Array.from(row);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -10,8 +10,8 @@ export const reorder = (row: ItemType[], startIndex: number, endIndex: number) =
 };
 
 export const copy = (
-  source: ReadonlyArray<ItemType>,
-  destination: ItemType[],
+  source: ReadonlyArray<RowItemType>,
+  destination: RowItemType[],
   droppableSource: DroppableLocation,
   droppableDestination: DroppableLocation,
 ) => {
@@ -26,8 +26,8 @@ export const copy = (
 };
 
 export const move = (
-  source: ItemType[],
-  destination: ItemType[],
+  source: RowItemType[],
+  destination: RowItemType[],
   droppableSource: DroppableLocation,
   droppableDestination: DroppableLocation,
 ) => {
@@ -37,13 +37,13 @@ export const move = (
 
   destClone.splice(droppableDestination.index, 0, removed);
 
-  const result: Record<string, ItemType[]> = {};
+  const result: Record<string, RowItemType[]> = {};
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
 
   return result;
 };
 
-export const remove = (list: ItemType[], id: string): ItemType[] => {
+export const remove = (list: RowItemType[], id: string): RowItemType[] => {
   return list.filter((item) => item.id !== id);
 };

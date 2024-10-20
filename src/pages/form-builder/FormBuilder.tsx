@@ -78,14 +78,10 @@ export default function FormBuilder() {
   };
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     if (!destination) return;
 
-    if (
-      Object.keys(rows).includes(source.droppableId) ||
-      source.droppableId === 'TRASH' ||
-      source.droppableId === 'PLACEHOLDER_ROW'
-    ) {
+    if (Object.keys(rows).includes(draggableId)) {
       reorderRows(source.droppableId, destination.droppableId);
       return;
     }
