@@ -40,6 +40,7 @@ export const Handle = styled('div')(() => ({
   background: '#fff',
   borderRight: '1px solid #ddd',
   color: '#000',
+  border: '1px dashed green',
 }));
 
 export const List = styled('div', {
@@ -95,6 +96,8 @@ export const RowContent = styled('div')(() => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: 'none',
+  border: '1px dashed blue',
+  flexGrow: '1',
 }));
 
 export const ListContainer = styled(List)(() => ({
@@ -245,10 +248,11 @@ export const DeleteIcon = styled(Delete)({
 });
 
 export const NewRow = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isdraggingover',
-})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
-  border: `1px ${isdraggingover ? 'dashed #000' : 'none'}`,
+  shouldForwardProp: (prop) => prop !== 'isdraggingover' && prop !== 'hasItems',
+})<{ isdraggingover?: boolean; hasItems?: boolean }>(({ isdraggingover, hasItems }) => ({
+  border: `${isdraggingover ? '1px dashed #000' : !hasItems ? '1px solid #ddd' : 'none'}`,
+  borderRadius: '3px',
   margin: '8px',
-  height: '50px',
+  height: '57px',
   width: '700px',
 }));
