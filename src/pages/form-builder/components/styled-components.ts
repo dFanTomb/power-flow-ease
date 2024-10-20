@@ -73,7 +73,6 @@ export const Row = styled('div', {
   flexDirection: 'row',
   columnGap: '10px',
   alignItems: 'center',
-  border: '1px dashed red',
 }));
 
 export const RowItem = styled('div', {

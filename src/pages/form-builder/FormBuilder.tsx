@@ -21,7 +21,7 @@ import {
 import { copy, move, reorder, remove } from './utils.ts';
 import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
-import { ItemType, RowItemType, State } from './types';
+import { RowItemType, Rows } from './types';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
 export default function FormBuilder() {
@@ -31,30 +31,65 @@ export default function FormBuilder() {
   const handleAddTemplateModalOpen = useCallback(() => setAddTemplateModalOpen(true), []);
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
-  const [rows, setRows] = useState<State>({ [uuid()]: [] });
+  const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
 
-  const cleanRows = (prevState: State) => {
+  const cleanRows = (prevState: Rows) => {
     const rowKeys = Object.keys(prevState);
 
     if (rowKeys.length === 1) return prevState;
 
     const newState = rowKeys
       .map((rowKey) => (prevState[rowKey].length > 0 ? { [rowKey]: prevState[rowKey] } : null))
-      .filter((item): item is { [key: string]: RowItemType[] | ItemType[] } => item !== null)
+      .filter((item): item is { [key: string]: RowItemType[] } => item !== null)
       .reduce((accumulator, currentValue) => ({ ...accumulator, ...currentValue }), {});
 
     return Object.keys(newState).length > 0 ? newState : prevState;
   };
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+  const reorderRows = (sourceDroppableId: string, destinationDroppableId: string) => {
+    if (destinationDroppableId === 'PLACEHOLDER_ROW') {
+      // move sourceDroppableId to end of array rows
+      const sourceRow = rows[sourceDroppableId];
+      const newState = { ...rows };
+      delete newState[sourceDroppableId];
+      newState[uuid()] = sourceRow;
+      setRows(newState);
+      return;
+    }
 
+    if (destinationDroppableId === 'TRASH') {
+      // remove row from array rows
+      const newState = { ...rows };
+      delete newState[sourceDroppableId];
+      setRows(newState);
+      return;
+    }
+
+    if (Object.keys(rows).includes(destinationDroppableId)) {
+      // reorder rows so that row with sourceDroppableId and row with destinationDroppableId swap places
+      const sourceRow = rows[sourceDroppableId];
+      const destinationRow = rows[destinationDroppableId];
+      const newState = { ...rows };
+      newState[sourceDroppableId] = destinationRow;
+      newState[destinationDroppableId] = sourceRow;
+      setRows(newState);
+      return;
+    }
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination, draggableId } = result;
     if (!destination) return;
+
+    if (Object.keys(rows).includes(draggableId)) {
+      reorderRows(source.droppableId, destination.droppableId);
+      return;
+    }
 
     if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
 
     if (destination.droppableId === 'TRASH') {
-      setRows((prevState: State) => {
+      setRows((prevState: Rows) => {
         const newState = { ...prevState };
         const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
@@ -71,7 +106,7 @@ export default function FormBuilder() {
 
     if (destination.droppableId === 'PLACEHOLDER_ROW') {
       if (source.droppableId === 'ITEMS') {
-        setRows((prevState: State) =>
+        setRows((prevState: Rows) =>
           cleanRows({
             ...prevState,
             [uuid()]: copy(Object.values(ITEMS), [], source, destination),
@@ -81,7 +116,7 @@ export default function FormBuilder() {
         return;
       }
 
-      setRows((prevState: State) => {
+      setRows((prevState: Rows) => {
         const newState = { ...prevState };
         const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
@@ -95,7 +130,7 @@ export default function FormBuilder() {
 
     switch (source.droppableId) {
       case destination.droppableId:
-        setRows((prevState: State) =>
+        setRows((prevState: Rows) =>
           cleanRows({
             ...prevState,
             [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
@@ -104,7 +139,7 @@ export default function FormBuilder() {
         break;
 
       case 'ITEMS':
-        setRows((prevState: State) =>
+        setRows((prevState: Rows) =>
           cleanRows({
             ...prevState,
             [destination.droppableId]: copy(
@@ -118,7 +153,7 @@ export default function FormBuilder() {
         break;
 
       default:
-        setRows((prevState: State) =>
+        setRows((prevState: Rows) =>
           cleanRows({
             ...prevState,
             ...move(prevState[source.droppableId], prevState[destination.droppableId], source, destination),
@@ -177,6 +212,25 @@ export default function FormBuilder() {
               <Droppable key={index} droppableId={row}>
                 {(provided, snapshot) => (
                   <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
+                    <Draggable key={row} draggableId={row} index={index}>
+                      {(provided) => (
+                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                          <Handle>
+                            <DragIndicatorOutlinedIcon
+                              sx={{
+                                fontSize: '36px',
+                                margin: '0 auto',
+                                color: 'gray',
+                                height: '53px',
+                                border: '1px solid #ddd',
+                                borderRadius: '4px',
+                                boxShadow: '1px 1px 0px lightgray',
+                              }}
+                            />
+                          </Handle>
+                        </div>
+                      )}
+                    </Draggable>
                     {rows[row].length
                       ? rows[row].map((rowItem: { id: string; content: string }, index: number) => (
                           <Draggable key={rowItem.id} draggableId={rowItem.id} index={index}>
@@ -191,19 +245,6 @@ export default function FormBuilder() {
                                   ...provided.draggableProps.style,
                                 }}
                               >
-                                <Handle {...provided.dragHandleProps}>
-                                  <DragIndicatorOutlinedIcon
-                                    sx={{
-                                      fontSize: '36px',
-                                      margin: '0 auto',
-                                      color: 'gray',
-                                      height: '53px',
-                                      border: '1px solid #ddd',
-                                      borderRadius: '4px',
-                                      boxShadow: '1px 1px 0px lightgray',
-                                    }}
-                                  />
-                                </Handle>
                                 <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
                               </div>
                             )}
