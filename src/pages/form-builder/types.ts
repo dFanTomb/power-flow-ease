@@ -8,18 +8,13 @@ export type RowItemType = {
   content: string;
 };
 
-export type State = {
-  [key: string]: RowItemType[] | ItemType[];
+export type Rows = {
+  [key: string]: RowItemType[];
 };
 
 export type Row = {
   id: string;
   items: never[];
-};
-
-export type ItemType = {
-  id: string;
-  content: string;
 };
 
 export type TrashZoneProps = {
