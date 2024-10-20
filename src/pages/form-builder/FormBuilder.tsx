@@ -65,11 +65,6 @@ export default function FormBuilder() {
       return;
     }
 
-    if (!Object.keys(rows).includes(destinationDroppableId)) {
-      // if destinationDroppableId is not in rows, return
-      return;
-    }
-
     if (Object.keys(rows).includes(destinationDroppableId)) {
       // reorder rows so that row with sourceDroppableId and row with destinationDroppableId swap places
       const sourceRow = rows[sourceDroppableId];
@@ -86,7 +81,11 @@ export default function FormBuilder() {
     const { source, destination } = result;
     if (!destination) return;
 
-    if (Object.keys(rows).includes(source.droppableId)) {
+    if (
+      Object.keys(rows).includes(source.droppableId) ||
+      source.droppableId === 'TRASH' ||
+      source.droppableId === 'PLACEHOLDER_ROW'
+    ) {
       reorderRows(source.droppableId, destination.droppableId);
       return;
     }
