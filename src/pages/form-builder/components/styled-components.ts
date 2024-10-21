@@ -226,24 +226,27 @@ export const StyledButton = styled('button')(
 
 export const TrashZone = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover',
-})<{ isdraggingover?: boolean }>(() => ({
-  width: '100px',
-  height: '100px',
+})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
+  width: '70px',
+  height: '70px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '8px',
   fontSize: '1.2rem',
   textAlign: 'center',
-  margin: '0 auto',
-  border: '2px dashed lightgray',
+  marginTop: '20px',
+  marginLeft: '70%',
+  border: `2px dashed ${isdraggingover ? 'lightgray' : 'none'}`,
 }));
 
-export const DeleteIcon = styled(Delete)({
+export const DeleteIcon = styled(Delete, {
+  shouldForwardProp: (prop) => prop !== 'isdraggingover',
+})<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
   position: 'absolute',
   fontSize: '30px',
-  color: 'gray',
-});
+  color: isdraggingover ? 'lightgray' : 'gray',
+}));
 
 export const NewRow = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover' && prop !== 'hasItems',

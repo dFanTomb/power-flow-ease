@@ -26,12 +26,16 @@ import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined
 
 export default function FormBuilder() {
   const [addTemplateModalOpen, setAddTemplateModalOpen] = useState<boolean>(false);
+  const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const handleAddTemplate = () => {};
   const handleAddTemplateModalOpen = useCallback(() => setAddTemplateModalOpen(true), []);
   const handleAddTemplateModalClose = useCallback(() => setAddTemplateModalOpen(false), []);
 
-  const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
+  const onDragStart = () => {
+    setIsDragging(true);
+  };
 
   const cleanRows = (prevState: Rows) => {
     const rowKeys = Object.keys(prevState);
@@ -79,6 +83,9 @@ export default function FormBuilder() {
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, draggableId } = result;
+
+    setIsDragging(false);
+
     if (!destination) return;
 
     if (Object.keys(rows).includes(draggableId)) {
@@ -175,7 +182,7 @@ export default function FormBuilder() {
         }
       />
       <AddTemplate open={addTemplateModalOpen} handleClose={handleAddTemplateModalClose} onSubmit={handleAddTemplate} />
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
         <Content>
           <Droppable droppableId='ITEMS' isDropDisabled={true}>
             {(provided, snapshot) => (
@@ -275,7 +282,7 @@ export default function FormBuilder() {
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (
             <TrashZone ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-              {snapshot.isDraggingOver && <DeleteIcon />}
+              {isDragging && <DeleteIcon isdraggingover={snapshot.isDraggingOver} />}
               {provided.placeholder}
             </TrashZone>
           )}
