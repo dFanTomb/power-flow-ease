@@ -225,12 +225,12 @@ export const StyledButton = styled('button')(
 );
 
 export const TrashZone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isDragging',
-})<{ isDragging?: boolean }>(({ isDragging }) => ({
+  shouldForwardProp: (prop) => prop !== 'isDragging' && prop !== 'isdraggingover',
+})<{ isDragging?: boolean; isdraggingover?: boolean }>(({ isDragging, isdraggingover }) => ({
   width: '70px',
   height: '70px',
   position: 'fixed',
-  top: '50px',
+  top: '100px',
   right: '50%',
   transform: 'translateX(35px)',
   display: 'flex',
@@ -240,17 +240,17 @@ export const TrashZone = styled('div', {
   borderRadius: '8px',
   fontSize: '1.2rem',
   textAlign: 'center',
-  border: '2px dashed red',
+  border: `2px dashed ${isdraggingover ? 'lightgray' : 'none'}`,
 }));
 
 export const DeleteIcon = styled(Delete, {
-  shouldForwardProp: (prop) => prop !== 'isDragging',
-})<{ isDragging?: boolean }>(({ isDragging }) => ({
+  shouldForwardProp: (prop) => prop !== 'isDragging' && prop !== 'isdraggingover',
+})<{ isDragging?: boolean; isdraggingover?: boolean }>(({ isDragging, isdraggingover }) => ({
   display: 'flex',
   opacity: `${isDragging ? '1' : '0'}`,
   position: 'absolute',
   fontSize: '30px',
-  color: 'red',
+  color: isdraggingover ? 'lightgray' : 'gray',
 }));
 
 export const NewRow = styled('div', {

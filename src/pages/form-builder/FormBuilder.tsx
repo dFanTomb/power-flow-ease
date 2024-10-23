@@ -280,10 +280,10 @@ export default function FormBuilder() {
           </Box>
         </Content>
         <Droppable droppableId='TRASH'>
-          {(provided) => (
-            <TrashZone ref={provided.innerRef} isDragging={isDragging}>
+          {(provided, snapshot) => (
+            <TrashZone ref={provided.innerRef} isDragging={isDragging} isdraggingover={snapshot.isDraggingOver}>
               {provided.placeholder}
-              <DeleteIcon isDragging={isDragging} />
+              <DeleteIcon isDragging={isDragging} isdraggingover={snapshot.isDraggingOver} />
             </TrashZone>
           )}
         </Droppable>
