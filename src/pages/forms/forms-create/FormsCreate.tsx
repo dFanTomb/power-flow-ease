@@ -1,27 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
+import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
-import { PageHeader } from '../../components/page-header/PageHeader.tsx';
+import { PageHeader } from '../../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import {
-  Content,
-  Item,
-  Clone,
-  Kiosk,
-  Notice,
-  Row,
-  TrashZone,
-  DeleteIcon,
-  NewRow,
-  Handle,
-} from './components/styled-components.ts';
-import { copy, move, reorder, remove } from './utils.ts';
-import { ITEMS } from './constants.ts';
 import { RowItem } from './components/RowItem.tsx';
-import { RowItemType, Rows } from './types';
-import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
+import { Items } from './components/Items.tsx';
+import { Content, Notice, Row, TrashZone, DeleteIcon, NewRow, Handle } from './components/styled-components.ts';
+import { copy, move, reorder, remove } from '../utils.ts';
+import { ITEMS } from '../constants.ts';
+import { RowItemType, Rows } from '../types.ts';
 
 export default function FormsCreate() {
   const [saveFormModalOpen, setSaveFormModalOpen] = useState<boolean>(false);
@@ -173,7 +163,7 @@ export default function FormsCreate() {
     <Container>
       <PageHeader
         title={'Create'}
-        breadcrumbs={['Create']}
+        breadcrumbs={['Create a Form']}
         renderRight={
           <Button variant='contained' color='primary' onClick={handleSaveFormModalOpen}>
             Save
@@ -183,36 +173,7 @@ export default function FormsCreate() {
       <AddTemplate open={saveFormModalOpen} handleClose={handleSaveFormModalClose} onSubmit={handleSaveForm} />
       <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
         <Content>
-          <Droppable droppableId='ITEMS' isDropDisabled={true}>
-            {(provided, snapshot) => (
-              <Kiosk ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                {Object.keys(ITEMS).map((key, index) => {
-                  const typedKey = key as keyof typeof ITEMS;
-                  return (
-                    <Draggable key={ITEMS[typedKey].id} draggableId={ITEMS[typedKey].id} index={index}>
-                      {(provided, snapshot) => (
-                        <React.Fragment>
-                          <Item
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            isdragging={snapshot.isDragging}
-                            style={provided.draggableProps.style}
-                          >
-                            {ITEMS[typedKey].content}
-                          </Item>
-                          {snapshot.isDragging && (
-                            <Clone isdragging={snapshot.isDragging}>{ITEMS[typedKey].content}</Clone>
-                          )}
-                        </React.Fragment>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </Kiosk>
-            )}
-          </Droppable>
+          <Items />
           <Box>
             {Object.keys(rows).map((row, index) => (
               <Droppable key={index} droppableId={row}>
@@ -238,24 +199,28 @@ export default function FormsCreate() {
                       )}
                     </Draggable>
                     {rows[row].length
-                      ? rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => (
-                          <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  width: '100%',
-                                  ...provided.draggableProps.style,
-                                }}
-                              >
-                                <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))
+                      ? rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
+                          console.log(`rowItem = ${rowItem.id}, index = ${itemIndex}`);
+
+                          return (
+                            <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    ...provided.draggableProps.style,
+                                  }}
+                                >
+                                  <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })
                       : !provided.placeholder && <Notice>Drop items here</Notice>}
                     {provided.placeholder}
                   </Row>

@@ -39,7 +39,7 @@ const JobsCreate = React.lazy(() => import('./pages/jobs/jobs-create/JobsCreate'
 const JobsEdit = React.lazy(() => import('./pages/jobs/jobs-edit/JobsEdit'));
 const FormsList = React.lazy(() => import('./pages/forms/FormsList'));
 const FormsDetails = React.lazy(() => import('./pages/forms/FormsDetails'));
-const FormsCreate = React.lazy(() => import('./pages/forms/FormsCreate'));
+const FormsCreate = React.lazy(() => import('./pages/forms/forms-create/FormsCreate.tsx'));
 const FormsEdit = React.lazy(() => import('./pages/forms/FormsEdit'));
 const NotFoundPage = React.lazy(() => import('./pages/not-found/NotFoundPage'));
 const MaintenancePage = React.lazy(() => import('./pages/maintenance/MaintenancePage'));

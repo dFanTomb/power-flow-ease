@@ -14,7 +14,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/base/Unstable_NumberInput';
-import { RowItemType } from '../types';
+import { RowItemType } from '../../types';
 import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
