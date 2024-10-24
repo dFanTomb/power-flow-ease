@@ -1,14 +1,13 @@
 import { useCallback, useState } from 'react';
-import { Box, Button, Container } from '@mui/material';
-import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
+import { Button, Container } from '@mui/material';
 import { v4 as uuid } from 'uuid';
-import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 import { PageHeader } from '../../../components/page-header/PageHeader.tsx';
 import { AddTemplate } from './components/AddTemplate.tsx';
-import { RowItem } from './components/RowItem.tsx';
 import { Items } from './components/Items.tsx';
-import { Content, Notice, Row, TrashZone, DeleteIcon, NewRow, Handle } from './components/styled-components.ts';
+import { RowsItems } from './components/RowsItems.tsx';
+import { Content, TrashZone, DeleteIcon } from './components/styled-components.ts';
 import { copy, move, reorder, remove } from '../utils.ts';
 import { ITEMS } from '../constants.ts';
 import { RowItemType, Rows } from '../types.ts';
@@ -174,74 +173,7 @@ export default function FormsCreate() {
       <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
         <Content>
           <Items />
-          <Box>
-            {Object.keys(rows).map((row, index) => (
-              <Droppable key={index} droppableId={row}>
-                {(provided, snapshot) => (
-                  <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
-                    <Draggable key={row} draggableId={row} index={index}>
-                      {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                          <Handle>
-                            <DragIndicatorOutlinedIcon
-                              sx={{
-                                fontSize: '36px',
-                                margin: '0 auto',
-                                color: 'gray',
-                                height: '53px',
-                                border: '1px solid #ddd',
-                                borderRadius: '4px',
-                                boxShadow: '1px 1px 0px lightgray',
-                              }}
-                            />
-                          </Handle>
-                        </div>
-                      )}
-                    </Draggable>
-                    {rows[row].length
-                      ? rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
-                          console.log(`rowItem = ${rowItem.id}, index = ${itemIndex}`);
-
-                          return (
-                            <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    width: '100%',
-                                    ...provided.draggableProps.style,
-                                  }}
-                                >
-                                  <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
-                                </div>
-                              )}
-                            </Draggable>
-                          );
-                        })
-                      : !provided.placeholder && <Notice>Drop items here</Notice>}
-                    {provided.placeholder}
-                  </Row>
-                )}
-              </Droppable>
-            ))}
-            <Box>
-              <Droppable droppableId='PLACEHOLDER_ROW'>
-                {(provided, snapshot) => (
-                  <NewRow
-                    ref={provided.innerRef}
-                    isdraggingover={snapshot.isDraggingOver}
-                    hasItems={Object.keys(rows).length > 0}
-                  >
-                    {snapshot.isDraggingOver ? true : Object.keys(rows).length === 0}
-                    {provided.placeholder}
-                  </NewRow>
-                )}
-              </Droppable>
-            </Box>
-          </Box>
+          <RowsItems rows={rows} />
         </Content>
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (

@@ -1,60 +1,16 @@
-import { useState } from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { v4 as uuid } from 'uuid';
 import { Box } from '@mui/material';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
 import { Row, Handle, Notice, NewRow } from './styled-components';
-import { Rows, RowItemType } from '../../types';
 import { RowItem } from './RowItem';
+import { Rows } from '../../types';
 
-const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
+interface RowsItemsProps {
+  rows: Rows;
+}
 
-export const cleanRows = (prevState: Rows) => {
-  const rowKeys = Object.keys(prevState);
-
-  if (rowKeys.length === 1) return prevState;
-
-  const newState = rowKeys
-    .map((rowKey) => (prevState[rowKey].length > 0 ? { [rowKey]: prevState[rowKey] } : null))
-    .filter((item): item is { [key: string]: RowItemType[] } => item !== null)
-    .reduce((accumulator, currentValue) => ({ ...accumulator, ...currentValue }), {});
-
-  return Object.keys(newState).length > 0 ? newState : prevState;
-};
-
-export const reorderRows = (sourceDroppableId: string, destinationDroppableId: string) => {
-  if (destinationDroppableId === 'PLACEHOLDER_ROW') {
-    // move sourceDroppableId to end of array rows
-    const sourceRow = rows[sourceDroppableId];
-    const newState = { ...rows };
-    delete newState[sourceDroppableId];
-    newState[uuid()] = sourceRow;
-    setRows(newState);
-    return;
-  }
-
-  if (destinationDroppableId === 'TRASH') {
-    // remove row from array rows
-    const newState = { ...rows };
-    delete newState[sourceDroppableId];
-    setRows(newState);
-    return;
-  }
-
-  if (Object.keys(rows).includes(destinationDroppableId)) {
-    // reorder rows so that row with sourceDroppableId and row with destinationDroppableId swap places
-    const sourceRow = rows[sourceDroppableId];
-    const destinationRow = rows[destinationDroppableId];
-    const newState = { ...rows };
-    newState[sourceDroppableId] = destinationRow;
-    newState[destinationDroppableId] = sourceRow;
-    setRows(newState);
-    return;
-  }
-};
-
-export const RowsItems = () => {
+export const RowsItems = ({ rows }: RowsItemsProps) => {
   return (
     <Box>
       {Object.keys(rows).map((row, index) => (
