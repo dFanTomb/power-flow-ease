@@ -1,23 +1,34 @@
 import { useCallback, useState } from 'react';
-import { Button, Container } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { Button, Container } from '@mui/material';
 
 import { PageHeader } from '../../../components/page-header/PageHeader.tsx';
-import { AddTemplate } from './components/AddTemplate.tsx';
+import { AddForm } from './components/AddForm.tsx';
 import { Items } from './components/Items.tsx';
 import { RowsItems } from './components/RowsItems.tsx';
 import { Content, TrashZone, DeleteIcon } from './components/styled-components.ts';
 import { copy, move, reorder, remove } from '../utils.ts';
 import { ITEMS } from '../constants.ts';
 import { RowItemType, Rows } from '../types.ts';
+import { addForm } from '../../../store/app/formSlice.ts';
+import { routes } from '../../../contants/routes.ts';
+import { useAppDispatch } from '../../../store/hooks.ts';
 
 export default function FormsCreate() {
   const [saveFormModalOpen, setSaveFormModalOpen] = useState<boolean>(false);
   const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  const handleSaveForm = () => {};
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSaveForm = (value: string) => {
+    dispatch(addForm({ id: uuid(), name: value, rows: rows }));
+    navigate(routes.formsList);
+  };
+
   const handleSaveFormModalOpen = useCallback(() => setSaveFormModalOpen(true), []);
   const handleSaveFormModalClose = useCallback(() => setSaveFormModalOpen(false), []);
 
@@ -169,7 +180,7 @@ export default function FormsCreate() {
           </Button>
         }
       />
-      <AddTemplate open={saveFormModalOpen} handleClose={handleSaveFormModalClose} onSubmit={handleSaveForm} />
+      <AddForm open={saveFormModalOpen} handleClose={handleSaveFormModalClose} onSubmit={handleSaveForm} />
       <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
         <Content>
           <Items />

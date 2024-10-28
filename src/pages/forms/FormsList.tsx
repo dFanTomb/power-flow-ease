@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
-import { styled } from '@mui/material/styles';
-import { Card, CardContent, Typography, List, Container, Stack, Chip, Pagination, Button } from '@mui/material';
-import { useJobs } from '../../hooks/api/use-jobs/useJobs.ts';
-import { PageHeader } from '../../components/page-header/PageHeader.tsx';
-import { routes } from '../../contants/routes.ts';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import { PostAdd } from '@mui/icons-material';
-import { JobsSearch } from '../../widgets/jobs/jobs-search/JobsSearch.tsx';
+import { Card, CardContent, Typography, List, Container, Stack, Pagination, Button } from '@mui/material';
+
+import { routes } from '../../contants/routes.ts';
+import { PageHeader } from '../../components/page-header/PageHeader.tsx';
+import { Form } from './types.ts';
+import { useAppSelector } from '../../store/hooks.ts';
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   marginBottom: 10,
@@ -20,53 +21,37 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   },
 }));
 
-export default function JobsList() {
-  const { data } = useJobs();
+export default function FormsList() {
+  const forms = useAppSelector((state) => state.form.forms);
   const navigate = useNavigate();
 
-  const handleJobClick = useCallback(() => {
-    navigate(routes.jobsDetails);
-  }, [navigate]);
-
-  if (!data) {
-    return null;
-  }
-
-  const jobsTagsList = ({ tags }: { tags: string[] }) => {
-    return tags.map((tag, index) => <Chip key={`${tag}_${index}`} label={tag} size={'small'} variant={'filled'} />);
-  };
+  const handleFormClick = useCallback(
+    (formId: string) => {
+      console.log('formId:', formId);
+      navigate(routes.formsEdit);
+    },
+    [navigate],
+  );
 
   return (
     <Container maxWidth={'lg'}>
       <PageHeader
-        title={'Jobs'}
-        breadcrumbs={['Jobs', 'List']}
+        title={'List'}
+        breadcrumbs={['Forms', 'List']}
         renderRight={
-          <Button variant={'contained'} startIcon={<PostAdd />} onClick={() => navigate(routes.jobsCreate)}>
+          <Button variant={'contained'} startIcon={<PostAdd />} onClick={() => navigate(routes.formsCreate)}>
             Create
           </Button>
         }
       />
-      <JobsSearch />
       <List sx={{ marginTop: 2 }}>
-        {data.jobs.map((job) => (
-          <CardWrapper key={job.title} onClick={handleJobClick}>
+        {forms.map((form: Form, index: number) => (
+          <CardWrapper key={index} onClick={() => handleFormClick(form.id)}>
             <CardContent>
               <Stack direction={'row'} justifyContent={'space-between'}>
-                <Stack>
-                  <Typography variant='h6' component={'h2'}>
-                    {job.title}
-                  </Typography>
-                  <Typography variant='subtitle1' component={'h3'}>
-                    {job.company} - {job.location}
-                  </Typography>
-                </Stack>
-                <Typography fontWeight={'fontWeightMedium'} variant='subtitle1'>
-                  {job.salary}
+                <Typography variant='h6' component={'h2'}>
+                  {form.name}
                 </Typography>
-              </Stack>
-              <Stack mt={1} direction={'row'} spacing={1}>
-                {jobsTagsList({ tags: job.tags })}
               </Stack>
             </CardContent>
           </CardWrapper>

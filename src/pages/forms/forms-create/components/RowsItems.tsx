@@ -4,11 +4,7 @@ import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined
 
 import { Row, Handle, Notice, NewRow } from './styled-components';
 import { RowItem } from './RowItem';
-import { Rows } from '../../types';
-
-interface RowsItemsProps {
-  rows: Rows;
-}
+import { RowsItemsProps } from '../../types';
 
 export const RowsItems = ({ rows }: RowsItemsProps) => {
   return (
@@ -38,8 +34,6 @@ export const RowsItems = ({ rows }: RowsItemsProps) => {
               </Draggable>
               {rows[row].length
                 ? rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
-                    console.log(`rowItem = ${rowItem.id}, index = ${itemIndex}`);
-
                     return (
                       <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
                         {(provided) => (
