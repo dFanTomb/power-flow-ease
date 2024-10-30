@@ -172,7 +172,7 @@ export default function FormsCreate() {
   return (
     <Container>
       <PageHeader
-        title={'Create'}
+        title={'Create Form'}
         breadcrumbs={['Create a Form']}
         renderRight={
           <Button variant='contained' color='primary' onClick={handleSaveFormModalOpen}>

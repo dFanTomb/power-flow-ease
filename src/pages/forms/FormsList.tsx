@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { PostAdd } from '@mui/icons-material';
@@ -7,7 +7,8 @@ import { Card, CardContent, Typography, List, Container, Stack, Pagination, Butt
 import { routes } from '../../contants/routes.ts';
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { Form } from './types.ts';
-import { useAppSelector } from '../../store/hooks.ts';
+import { useAppSelector, useAppDispatch } from '../../store/hooks.ts';
+import { addCurrentFormId } from '../../store/app/formSlice.ts';
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   marginBottom: 10,
@@ -24,11 +25,16 @@ const CardWrapper = styled(Card)(({ theme }) => ({
 export default function FormsList() {
   const forms = useAppSelector((state) => state.form.forms);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(addCurrentFormId(''));
+  }, []);
 
   const handleFormClick = useCallback(
     (formId: string) => {
-      console.log('formId:', formId);
-      navigate(routes.formsEdit);
+      dispatch(addCurrentFormId(formId));
+      navigate(`${routes.formsEdit}?formId=${formId}`);
     },
     [navigate],
   );
