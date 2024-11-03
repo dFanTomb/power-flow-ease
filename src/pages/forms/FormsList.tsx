@@ -1,26 +1,14 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import { PostAdd } from '@mui/icons-material';
-import { Card, CardContent, Typography, List, Container, Stack, Pagination, Button } from '@mui/material';
+import { CardContent, Typography, List, Container, Stack, Pagination, Button } from '@mui/material';
 
 import { routes } from '../../contants/routes.ts';
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { Form } from './types.ts';
 import { useAppSelector, useAppDispatch } from '../../store/hooks.ts';
 import { addCurrentFormId } from '../../store/app/formSlice.ts';
-
-const CardWrapper = styled(Card)(({ theme }) => ({
-  marginBottom: 10,
-  cursor: 'pointer',
-  transition: theme.transitions.create(['box-shadow', 'background-color'], {
-    duration: theme.transitions.duration.shorter,
-  }),
-  '&:hover': {
-    boxShadow: theme.shadows[15],
-    backgroundColor: theme.palette.grey[50],
-  },
-}));
+import { CardWrapper } from './forms-create/components/styled-components.ts';
 
 export default function FormsList() {
   const forms = useAppSelector((state) => state.form.forms);

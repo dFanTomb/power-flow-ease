@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import { numberInputClasses } from '@mui/base/Unstable_NumberInput';
 import { grey } from '@mui/material/colors';
 import { Delete } from '@mui/icons-material';
+import { Card } from '@mui/material';
 
 export const Content = styled('div')(() => ({
   marginRight: '200px',
@@ -259,4 +260,16 @@ export const NewRow = styled('div', {
   margin: '8px',
   height: '57px',
   width: '700px',
+}));
+
+export const CardWrapper = styled(Card)(({ theme }) => ({
+  marginBottom: 10,
+  cursor: 'pointer',
+  transition: theme.transitions.create(['box-shadow', 'background-color'], {
+    duration: theme.transitions.duration.shorter,
+  }),
+  '&:hover': {
+    boxShadow: theme.shadows[15],
+    backgroundColor: theme.palette.grey[50],
+  },
 }));
