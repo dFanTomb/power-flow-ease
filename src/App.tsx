@@ -37,6 +37,10 @@ const JobsList = React.lazy(() => import('./pages/jobs/jobs-list/JobsListPage'))
 const JobsDetails = React.lazy(() => import('./pages/jobs/jobs-details/JobsDetails'));
 const JobsCreate = React.lazy(() => import('./pages/jobs/jobs-create/JobsCreate'));
 const JobsEdit = React.lazy(() => import('./pages/jobs/jobs-edit/JobsEdit'));
+const FormsList = React.lazy(() => import('./pages/forms/FormsList'));
+const FormsDetails = React.lazy(() => import('./pages/forms/FormsDetails'));
+const FormsCreate = React.lazy(() => import('./pages/forms/forms-create/FormsCreate.tsx'));
+const FormsEdit = React.lazy(() => import('./pages/forms/FormsEdit'));
 const NotFoundPage = React.lazy(() => import('./pages/not-found/NotFoundPage'));
 const MaintenancePage = React.lazy(() => import('./pages/maintenance/MaintenancePage'));
 const LoginPage = React.lazy(() => import('./pages/login/LoginPage'));
@@ -146,6 +150,22 @@ const router = createBrowserRouter([
       {
         path: routes.jobsEdit,
         element: <JobsEdit />,
+      },
+      {
+        path: routes.formsList,
+        element: <FormsList />,
+      },
+      {
+        path: routes.formsDetails,
+        element: <FormsDetails />,
+      },
+      {
+        path: routes.formsCreate,
+        element: <FormsCreate />,
+      },
+      {
+        path: routes.formsEdit,
+        element: <FormsEdit />,
       },
       {
         path: routes.templatesList,

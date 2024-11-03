@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { navigationReducer } from './sidebar/navigationSlice';
 import { calendarReducer } from './calendar/calendarSlice';
-import { appReducer } from './app/appSlice';
+import { formReducer } from './app/formSlice';
 
 export const store = configureStore({
   reducer: {
-    app: appReducer,
+    form: formReducer,
     navigation: navigationReducer,
     calendar: calendarReducer,
   },

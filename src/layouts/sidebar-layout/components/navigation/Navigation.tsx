@@ -17,6 +17,7 @@ import {
   ShapeLineOutlined,
   SystemUpdate,
   ViewStreamOutlined,
+  FormatListBulleted,
 } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { useNotifications } from '../../../../hooks/api/use-notifications/useNotifications';
@@ -121,6 +122,29 @@ export function Navigation() {
           },
           {
             path: routes.jobsDetails,
+            label: 'Details',
+          },
+        ],
+      },
+      {
+        label: 'Forms',
+        icon: (props: any) => <FormatListBulleted {...props} />,
+        description: 'Form management',
+        items: [
+          {
+            path: routes.formsCreate,
+            label: 'Create',
+          },
+          {
+            path: routes.formsEdit,
+            label: 'Edit',
+          },
+          {
+            path: routes.formsList,
+            label: 'List',
+          },
+          {
+            path: routes.formsDetails,
             label: 'Details',
           },
         ],

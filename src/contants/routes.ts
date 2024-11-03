@@ -4,6 +4,7 @@ const blogPrefix = '/blog';
 const componentPrefix = `${themePrefix}/component`;
 const orderPrefix = '/order';
 const jobsPrefix = '/jobs';
+const formsPrefix = '/forms';
 const templatesPrefix = '/templates';
 
 export const ROUTES_WITHOUT_THEMECONFIG = ['/home', '/login'];
@@ -39,6 +40,10 @@ export const routes = {
   jobsDetails: `${jobsPrefix}/details`,
   jobsCreate: `${jobsPrefix}/create`,
   jobsEdit: `${jobsPrefix}/edit`,
+  formsList: `${formsPrefix}/list`,
+  formsDetails: `${formsPrefix}/details`,
+  formsCreate: `${formsPrefix}/create`,
+  formsEdit: `${formsPrefix}/edit`,
   login: '/login',
   register: '/register',
   resetPassword: '/reset-password',
