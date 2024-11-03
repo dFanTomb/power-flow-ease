@@ -8,12 +8,12 @@ export type RowItemType = {
   content: string;
 };
 
-export type Rows = {
+export type RowsType = {
   [key: string]: RowItemType[];
 };
 
-export type RowsItemsProps = {
-  rows: Rows;
+export type RowsProps = {
+  rows: RowsType;
 };
 
 export type TrashZoneProps = {
@@ -23,5 +23,5 @@ export type TrashZoneProps = {
 export type Form = {
   id: string;
   name: string;
-  rows: Rows;
+  rows: RowsType;
 };

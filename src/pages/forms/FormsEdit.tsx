@@ -8,9 +8,9 @@ import { routes } from '../../contants/routes.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { ITEMS } from './constants.ts';
-import { Rows } from './types.ts';
+import { RowsType } from './types.ts';
 import { Items } from './forms-create/components/Items.tsx';
-import { RowsItems } from './forms-create/components/RowsItems.tsx';
+import { Rows } from './forms-create/components/Rows.tsx';
 import { Content, TrashZone, DeleteIcon } from '../forms/forms-create/components/styled-components.ts';
 import { onDragEndHandler } from './utils.ts';
 import { editForm, selectCurrentForm } from '../../store/app/formSlice.ts';
@@ -27,7 +27,7 @@ export default function JobsEdit() {
     }
   }, [navigate, form]);
 
-  const [rows, setRows] = useState<Rows>(form?.rows || {});
+  const [rows, setRows] = useState<RowsType>(form?.rows || {});
 
   const handleSaveForm = () => {
     if (!form) return;
@@ -58,7 +58,7 @@ export default function JobsEdit() {
       <DragDropContext onDragEnd={onDragEnd} onDragStart={() => setIsDragging(true)}>
         <Content>
           <Items />
-          <RowsItems rows={rows} />
+          <Rows rows={rows} />
         </Content>
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (

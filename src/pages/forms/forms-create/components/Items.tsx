@@ -13,20 +13,22 @@ export const Items = () => {
 
             return (
               <Draggable key={ITEMS[typedKey].id} draggableId={ITEMS[typedKey].id} index={index}>
-                {(provided, snapshot) => (
-                  <React.Fragment>
-                    <Item
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      isdragging={snapshot.isDragging}
-                      style={provided.draggableProps.style}
-                    >
-                      {ITEMS[typedKey].content}
-                    </Item>
-                    {snapshot.isDragging && <Clone isdragging={snapshot.isDragging}>{ITEMS[typedKey].content}</Clone>}
-                  </React.Fragment>
-                )}
+                {(provided, snapshot) => {
+                  return (
+                    <React.Fragment>
+                      <Item
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        isdragging={snapshot.isDragging}
+                        style={provided.draggableProps.style}
+                      >
+                        {ITEMS[typedKey].content}
+                      </Item>
+                      {snapshot.isDragging && <Clone isdragging={snapshot.isDragging}>{ITEMS[typedKey].content}</Clone>}
+                    </React.Fragment>
+                  );
+                }}
               </Draggable>
             );
           })}

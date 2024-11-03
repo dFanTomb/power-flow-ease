@@ -28,12 +28,6 @@ export const formSlice = createSlice({
   },
 });
 
-export const selectFormById = (formId: string) =>
-  createSelector(
-    (state: { form: InitialState }) => state.form.forms,
-    (forms) => forms.find((form) => form.id === formId),
-  );
-
 export const selectCurrentForm = createSelector(
   (state: { form: InitialState }) => state.form.forms,
   (state: { form: InitialState }) => state.form.currentFormId,

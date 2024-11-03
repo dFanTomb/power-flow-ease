@@ -8,17 +8,17 @@ import { routes } from '../../../contants/routes.ts';
 import { useAppDispatch } from '../../../store/hooks.ts';
 import { PageHeader } from '../../../components/page-header/PageHeader.tsx';
 import { ITEMS } from '../constants.ts';
-import { Rows } from '../types.ts';
+import { RowsType } from '../types.ts';
 import { AddForm } from './components/AddForm.tsx';
 import { Items } from './components/Items.tsx';
-import { RowsItems } from './components/RowsItems.tsx';
+import { Rows } from './components/Rows.tsx';
 import { Content, TrashZone, DeleteIcon } from './components/styled-components.ts';
 import { onDragEndHandler } from '../utils.ts';
 import { addForm } from '../../../store/app/formSlice.ts';
 
 export default function FormsCreate() {
   const [saveFormModalOpen, setSaveFormModalOpen] = useState<boolean>(false);
-  const [rows, setRows] = useState<Rows>({ [uuid()]: [] });
+  const [rows, setRows] = useState<RowsType>({ [uuid()]: [] });
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ export default function FormsCreate() {
       <DragDropContext onDragEnd={onDragEnd} onDragStart={() => setIsDragging(true)}>
         <Content>
           <Items />
-          <RowsItems rows={rows} />
+          <Rows rows={rows} />
         </Content>
         <Droppable droppableId='TRASH'>
           {(provided, snapshot) => (

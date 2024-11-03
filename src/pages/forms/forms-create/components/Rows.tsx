@@ -4,9 +4,9 @@ import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined
 
 import { Row, Handle, Notice, NewRow } from './styled-components';
 import { RowItem } from './RowItem';
-import { RowsItemsProps } from '../../types';
+import { RowsProps } from '../../types';
 
-export const RowsItems = ({ rows }: RowsItemsProps) => {
+export const Rows = ({ rows }: RowsProps) => {
   return (
     <Box>
       {Object.keys(rows).map((row, index) => (
