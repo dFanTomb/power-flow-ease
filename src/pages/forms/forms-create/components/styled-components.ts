@@ -110,7 +110,7 @@ export const Notice = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
   padding: '0.5rem',
-  margin: '0 0.5rem 0.5rem',
+  margin: '0.5rem',
   border: '1px solid transparent',
   lineHeight: 1.5,
   color: '#aaa',

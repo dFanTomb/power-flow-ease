@@ -14,15 +14,9 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { Unstable_NumberInput as BaseNumberInput, NumberInputProps } from '@mui/base/Unstable_NumberInput';
-import { RowItemType } from '../../types';
+import { RowItemType, RowItemProps } from '../../types';
 import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
-import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
-
-interface RowItemProps {
-  item: RowItemType;
-  handleProps: DraggableProvidedDragHandleProps | null;
-}
 
 export const RowItem = ({ item, handleProps }: RowItemProps) => {
   const [name, setName] = useState<string>('');

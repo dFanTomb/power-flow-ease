@@ -1,3 +1,5 @@
+import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
+
 export type DroppableLocation = {
   droppableId: string;
   index: number;
@@ -6,6 +8,11 @@ export type DroppableLocation = {
 export type RowItemType = {
   id: string;
   content: string;
+};
+
+export type RowItemProps = {
+  item: RowItemType;
+  handleProps: DraggableProvidedDragHandleProps | null;
 };
 
 export type RowsType = {

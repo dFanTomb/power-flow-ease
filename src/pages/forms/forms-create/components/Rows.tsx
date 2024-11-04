@@ -15,7 +15,12 @@ export const Rows = ({ rows }: RowsProps) => {
             <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver}>
               <Draggable key={row} draggableId={row} index={index}>
                 {(provided) => (
-                  <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{ display: 'flex', alignItems: 'center', width: '100%', ...provided.draggableProps.style }}
+                  >
                     <Handle>
                       <DragIndicatorOutlinedIcon
                         sx={{
@@ -29,31 +34,35 @@ export const Rows = ({ rows }: RowsProps) => {
                         }}
                       />
                     </Handle>
+
+                    {rows[row].length ? (
+                      rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
+                        return (
+                          <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  margin: '0 2px',
+                                  ...provided.draggableProps.style,
+                                }}
+                              >
+                                <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })
+                    ) : (
+                      <Notice>Drop your items here</Notice>
+                    )}
                   </div>
                 )}
               </Draggable>
-              {rows[row].length
-                ? rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
-                    return (
-                      <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              ...provided.draggableProps.style,
-                            }}
-                          >
-                            <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })
-                : !provided.placeholder && <Notice>Drop items here</Notice>}
               {provided.placeholder}
             </Row>
           )}
