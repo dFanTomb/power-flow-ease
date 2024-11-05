@@ -4,11 +4,13 @@ import { Form } from '../../pages/forms/types';
 type InitialState = {
   currentFormId: string;
   forms: Form[];
+  currentPage: number;
 };
 
 const initialState: InitialState = {
   currentFormId: '',
   forms: [],
+  currentPage: 1,
 };
 
 export const formSlice = createSlice({
@@ -28,6 +30,9 @@ export const formSlice = createSlice({
     deleteForm: (state, action: PayloadAction<string>) => {
       return { ...state, forms: state.forms.filter((form) => form.id !== action.payload) };
     },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      return { ...state, currentPage: action.payload };
+    },
   },
 });
 
@@ -37,5 +42,5 @@ export const selectCurrentForm = createSelector(
   (forms, currentFormId) => forms.find((form) => form.id === currentFormId),
 );
 
-export const { addForm, addCurrentFormId, editForm, deleteForm } = formSlice.actions;
+export const { addForm, addCurrentFormId, editForm, deleteForm, setCurrentPage } = formSlice.actions;
 export const { reducer: formReducer } = formSlice;

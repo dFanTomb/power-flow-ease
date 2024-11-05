@@ -7,13 +7,18 @@ import { routes } from '../../contants/routes.ts';
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
 import { Form } from './types.ts';
 import { useAppSelector, useAppDispatch } from '../../store/hooks.ts';
-import { addCurrentFormId, deleteForm } from '../../store/app/formSlice.ts';
+import { addCurrentFormId, deleteForm, setCurrentPage } from '../../store/app/formSlice.ts';
 import { CardWrapper, DeleteIcon } from './forms-create/components/styled-components.ts';
 
 export default function FormsList() {
   const forms = useAppSelector((state) => state.form.forms);
+  const currentPage = useAppSelector((state) => state.form.currentPage);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const formsPerPage = 5;
+  const totalPages = Math.ceil(forms.length / formsPerPage);
+  const currentForms = forms.slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage);
 
   useEffect(() => {
     dispatch(addCurrentFormId(''));
@@ -34,21 +39,30 @@ export default function FormsList() {
     [dispatch],
   );
 
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
+    dispatch(setCurrentPage(page));
+  };
+
+  const handleCreateForm = () => {
+    const lastPage = Math.ceil((forms.length + 1) / formsPerPage);
+    dispatch(setCurrentPage(lastPage));
+    navigate(routes.formsCreate);
+  };
+
   return (
     <Container maxWidth={'lg'}>
       <PageHeader
         title={'List'}
         breadcrumbs={['Forms', 'List']}
         renderRight={
-          <Button variant={'contained'} startIcon={<PostAdd />} onClick={() => navigate(routes.formsCreate)}>
+          <Button variant={'contained'} startIcon={<PostAdd />} onClick={handleCreateForm}>
             Create
           </Button>
         }
       />
-
       <List sx={{ marginTop: 2 }}>
-        {forms.length ? (
-          forms.map((form: Form, index: number) => (
+        {currentForms.length ? (
+          currentForms.map((form: Form, index: number) => (
             <CardWrapper key={index} onClick={() => handleFormClick(form.id)}>
               <CardContent className='card-wrapper'>
                 <Stack direction={'row'} justifyContent={'space-between'}>
@@ -78,9 +92,14 @@ export default function FormsList() {
           </Typography>
         )}
       </List>
-
-      <Stack alignItems={'center'}>
-        <Pagination count={10} variant='outlined' shape='rounded' />
+      <Stack alignItems={'center'} sx={{ position: 'fixed', bottom: '4%', right: '44%' }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant='outlined'
+          shape='rounded'
+        />
       </Stack>
     </Container>
   );
