@@ -2,7 +2,7 @@ import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { DropResult } from '@hello-pangea/dnd';
 
-import { DroppableLocation, RowItemType, Rows } from './types';
+import { DroppableLocation, RowItemType, RowsType } from './types';
 
 export const reorder = (row: RowItemType[], startIndex: number, endIndex: number) => {
   const result = Array.from(row);
@@ -51,7 +51,7 @@ export const remove = (list: RowItemType[], id: string): RowItemType[] => {
   return list.filter((item) => item.id !== id);
 };
 
-export const cleanRows = (prevState: Rows) => {
+export const cleanRows = (prevState: RowsType) => {
   const rowKeys = Object.keys(prevState);
 
   if (rowKeys.length === 1) return prevState;
@@ -65,8 +65,8 @@ export const cleanRows = (prevState: Rows) => {
 };
 
 export const reorderRows = (
-  rows: Rows,
-  setRows: React.Dispatch<React.SetStateAction<Rows>>,
+  rows: RowsType,
+  setRows: React.Dispatch<React.SetStateAction<RowsType>>,
   sourceDroppableId: string,
   destinationDroppableId: string,
 ) => {
@@ -102,8 +102,8 @@ export const reorderRows = (
 
 export const onDragEndHandler = (
   result: DropResult,
-  rows: Rows,
-  setRows: React.Dispatch<React.SetStateAction<Rows>>,
+  rows: RowsType,
+  setRows: React.Dispatch<React.SetStateAction<RowsType>>,
   setIsDragging: React.Dispatch<React.SetStateAction<boolean>>,
   ITEMS: RowItemType[],
 ) => {
@@ -121,7 +121,7 @@ export const onDragEndHandler = (
   if (source.droppableId === 'ITEMS' && destination.droppableId === 'TRASH') return;
 
   if (destination.droppableId === 'TRASH') {
-    setRows((prevState: Rows) => {
+    setRows((prevState: RowsType) => {
       const newState = { ...prevState };
       const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
@@ -138,7 +138,7 @@ export const onDragEndHandler = (
 
   if (destination.droppableId === 'PLACEHOLDER_ROW') {
     if (source.droppableId === 'ITEMS') {
-      setRows((prevState: Rows) =>
+      setRows((prevState: RowsType) =>
         cleanRows({
           ...prevState,
           [uuid()]: copy(Object.values(ITEMS), [], source, destination),
@@ -148,7 +148,7 @@ export const onDragEndHandler = (
       return;
     }
 
-    setRows((prevState: Rows) => {
+    setRows((prevState: RowsType) => {
       const newState = { ...prevState };
       const currentRowItems = remove(prevState[source.droppableId], prevState[source.droppableId][source.index].id);
 
@@ -162,7 +162,7 @@ export const onDragEndHandler = (
 
   switch (source.droppableId) {
     case destination.droppableId:
-      setRows((prevState: Rows) =>
+      setRows((prevState: RowsType) =>
         cleanRows({
           ...prevState,
           [destination.droppableId]: reorder(prevState[source.droppableId], source.index, destination.index),
@@ -171,7 +171,7 @@ export const onDragEndHandler = (
       break;
 
     case 'ITEMS':
-      setRows((prevState: Rows) =>
+      setRows((prevState: RowsType) =>
         cleanRows({
           ...prevState,
           [destination.droppableId]: copy(
@@ -185,7 +185,7 @@ export const onDragEndHandler = (
       break;
 
     default:
-      setRows((prevState: Rows) =>
+      setRows((prevState: RowsType) =>
         cleanRows({
           ...prevState,
           ...move(prevState[source.droppableId], prevState[destination.droppableId], source, destination),
