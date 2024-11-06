@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PostAdd } from '@mui/icons-material';
-import { CardContent, Typography, List, Container, Stack, Pagination, Button } from '@mui/material';
+import { CardContent, Typography, List, Container, Stack, Pagination, Button, Box } from '@mui/material';
 
 import { routes } from '../../contants/routes.ts';
 import { PageHeader } from '../../components/page-header/PageHeader.tsx';
@@ -35,6 +35,12 @@ export default function FormsList() {
   const handleDeleteForm = useCallback(
     (formId: string) => {
       dispatch(deleteForm(formId));
+
+      const updatedForms = forms.filter((form) => form.id !== formId);
+
+      if (updatedForms.length % formsPerPage === 0 && currentPage > 1) {
+        dispatch(setCurrentPage(currentPage - 1));
+      }
     },
     [dispatch],
   );
@@ -63,28 +69,40 @@ export default function FormsList() {
       <List sx={{ marginTop: 2 }}>
         {currentForms.length ? (
           currentForms.map((form: Form, index: number) => (
-            <CardWrapper key={index} onClick={() => handleFormClick(form.id)}>
-              <CardContent className='card-wrapper'>
-                <Stack direction={'row'} justifyContent={'space-between'}>
-                  <Stack>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <CardWrapper key={index} onClick={() => handleFormClick(form.id)} sx={{ width: '100%' }}>
+                <CardContent className='card-wrapper'>
+                  <Stack direction={'row'} justifyContent={'space-between'}>
                     <Typography variant='h6' component={'h2'}>
                       {form.name}
                     </Typography>
                   </Stack>
-                  <Stack>
-                    <DeleteIcon
-                      onClick={() => handleDeleteForm(form.id)}
-                      sx={{
-                        justifyContent: 'flex-end',
-                        position: 'unset',
-                        transition: 'color 0.3',
-                        '&:hover': { color: 'lightgray' },
-                      }}
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardWrapper>
+                </CardContent>
+              </CardWrapper>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '8px',
+                  margin: '0 0 11px 4px',
+                  backgroundColor: '#fff',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '4px',
+                }}
+              >
+                <DeleteIcon
+                  onClick={() => handleDeleteForm(form.id)}
+                  sx={{
+                    color: '#9e9e9e',
+                    fontSize: '28px',
+                    justifyContent: 'flex-end',
+                    position: 'unset',
+                    transition: 'color 0.3',
+                    '&:hover': { color: 'lightgray' },
+                  }}
+                />
+              </Box>
+            </Box>
           ))
         ) : (
           <Typography variant='h5' component={'h2'} sx={{ m: 1 }}>
