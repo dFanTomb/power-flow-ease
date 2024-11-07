@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, TextField } from '@mui/material';
 import { Save } from '@mui/icons-material';
 
 import { routes } from '../../contants/routes.ts';
@@ -45,7 +45,19 @@ export default function JobsEdit() {
         title={'Edit Form'}
         breadcrumbs={['Forms', 'Edit']}
         renderRight={
-          <Stack direction={'row'} justifyContent={'flex-end'} spacing={2}>
+          <Stack
+            sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: '37px', gap: '10px' }}
+          >
+            <TextField
+              label='Form Name'
+              value={form?.name}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (form?.id) {
+                  dispatch(editForm({ ...form, name: event.target.value }));
+                }
+              }}
+              size='small'
+            />
             <Button variant={'outlined'} color={'secondary'} onClick={() => navigate(routes.formsList)}>
               Cancel
             </Button>
