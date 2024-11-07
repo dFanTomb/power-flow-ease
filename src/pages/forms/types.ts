@@ -32,3 +32,9 @@ export type Form = {
   name: string;
   rows: RowsType;
 };
+
+export type AddFormProps = {
+  open: boolean;
+  handleClose: () => void;
+  onSubmit: (value: string) => void;
+};

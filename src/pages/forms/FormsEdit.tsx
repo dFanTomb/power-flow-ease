@@ -15,7 +15,7 @@ import { Content, TrashZone, DeleteIcon } from '../forms/forms-create/components
 import { onDragEndHandler } from './utils.ts';
 import { editForm, selectCurrentForm } from '../../store/app/formSlice.ts';
 
-export default function JobsEdit() {
+export default function FormsEdit() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -25,14 +25,19 @@ export default function JobsEdit() {
     if (!form) {
       navigate(routes.formsList);
     }
+    console.log('loaded form:', form);
   }, [navigate, form]);
 
   const [rows, setRows] = useState<RowsType>(form?.rows || {});
+  const [error, setError] = useState<boolean>(false);
 
   const handleSaveForm = () => {
-    if (!form) return;
-    dispatch(editForm({ ...form, rows }));
-    navigate(routes.formsList);
+    if (!form?.name || form.name === '') {
+      setError(true);
+    } else {
+      dispatch(editForm({ ...form, rows }));
+      navigate(routes.formsList);
+    }
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -50,12 +55,15 @@ export default function JobsEdit() {
           >
             <TextField
               label='Form Name'
-              value={form?.name}
+              value={form?.name || ''}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 if (form?.id) {
                   dispatch(editForm({ ...form, name: event.target.value }));
+                  if (error) setError(false);
                 }
               }}
+              error={error}
+              helperText={error ? 'Name is required' : ''}
               size='small'
             />
             <Button variant={'outlined'} color={'secondary'} onClick={() => navigate(routes.formsList)}>
