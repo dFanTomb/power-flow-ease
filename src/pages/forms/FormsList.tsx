@@ -69,8 +69,8 @@ export default function FormsList() {
       <List sx={{ marginTop: 2 }}>
         {currentForms.length ? (
           currentForms.map((form: Form, index: number) => (
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <CardWrapper key={index} onClick={() => handleFormClick(form.id)} sx={{ width: '100%' }}>
+            <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <CardWrapper onClick={() => handleFormClick(form.id)} sx={{ width: '100%' }}>
                 <CardContent className='card-wrapper'>
                   <Stack direction={'row'} justifyContent={'space-between'}>
                     <Typography variant='h6' component={'h2'}>

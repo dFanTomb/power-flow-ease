@@ -25,7 +25,6 @@ export default function FormsEdit() {
     if (!form) {
       navigate(routes.formsList);
     }
-    console.log('loaded form:', form);
   }, [navigate, form]);
 
   const [rows, setRows] = useState<RowsType>(form?.rows || {});
