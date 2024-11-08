@@ -18,7 +18,7 @@ import { RowItemType, RowItemProps } from '../../types';
 import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
-export const RowItem = ({ item, handleProps }: RowItemProps) => {
+export const RowItem = ({ item, handleProps, isDragging }: RowItemProps) => {
   const [name, setName] = useState<string>('');
   const [radioValue, setRadioValue] = useState<string>('a');
   const [numberValue, setNumberValue] = useState<number | null>(null);
@@ -190,7 +190,7 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         setIsHovered(false);
       }}
     >
-      {isHovered && (
+      {(isHovered || isDragging) && (
         <Handle {...handleProps}>
           <DragIndicatorOutlinedIcon
             sx={{

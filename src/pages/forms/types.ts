@@ -6,6 +6,7 @@ export type DroppableLocation = {
 };
 
 export type RowItemType = {
+  index: number;
   id: string;
   content: string;
 };
@@ -13,6 +14,7 @@ export type RowItemType = {
 export type RowItemProps = {
   item: RowItemType;
   handleProps: DraggableProvidedDragHandleProps | null;
+  isDragging: boolean;
 };
 
 export type RowsType = {

@@ -39,7 +39,7 @@ export const Rows = ({ rows }: RowsProps) => {
                         rows[row].map((rowItem: { id: string; content: string }, itemIndex: number) => {
                           return (
                             <Draggable key={rowItem.id} draggableId={rowItem.id} index={itemIndex}>
-                              {(provided) => (
+                              {(provided, snapshot) => (
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
@@ -51,7 +51,11 @@ export const Rows = ({ rows }: RowsProps) => {
                                     ...provided.draggableProps.style,
                                   }}
                                 >
-                                  <RowItem handleProps={provided.dragHandleProps} item={rowItem} />
+                                  <RowItem
+                                    handleProps={provided.dragHandleProps}
+                                    item={{ ...rowItem, index: itemIndex }}
+                                    isDragging={snapshot.isDragging}
+                                  />
                                 </div>
                               )}
                             </Draggable>
