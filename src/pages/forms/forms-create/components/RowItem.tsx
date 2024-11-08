@@ -111,7 +111,7 @@ export const RowItem = ({ item, handleProps, isDragging }: RowItemProps) => {
               id='radio-group'
               value={radioValue}
               onChange={handleChangeRadio}
-              sx={{ padding: '10px 10px' }}
+              sx={{ padding: '5px 10px' }}
             >
               <FormControlLabel value='a' control={<Radio />} label='True' />
               <FormControlLabel value='b' control={<Radio />} label='False' />
@@ -141,7 +141,11 @@ export const RowItem = ({ item, handleProps, isDragging }: RowItemProps) => {
       case 'Checkbox':
         return (
           <FormGroup sx={{ display: 'flex', alignContent: 'center' }}>
-            <FormControlLabel control={<Checkbox id='checkbox' />} label='Checkbox' sx={{ marginLeft: '2px' }} />
+            <FormControlLabel
+              control={<Checkbox id='checkbox' />}
+              label='Checkbox'
+              sx={{ marginLeft: '2px', padding: '5px 0' }}
+            />
           </FormGroup>
         );
       case 'Button':

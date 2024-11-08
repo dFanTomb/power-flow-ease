@@ -15,12 +15,19 @@ export const Rows = ({ rows }: RowsProps) => {
             return (
               <Row ref={provided.innerRef} isdraggingover={snapshot.isDraggingOver} {...provided.droppableProps}>
                 <Draggable key={row} draggableId={row} index={index}>
-                  {(provided) => (
+                  {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{ display: 'flex', alignItems: 'center', width: '100%', ...provided.draggableProps.style }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: '100%',
+                        border: snapshot.isDragging ? '1px solid #ddd' : '',
+                        borderRadius: '3px',
+                        ...provided.draggableProps.style,
+                      }}
                     >
                       <Handle>
                         <DragIndicatorOutlinedIcon

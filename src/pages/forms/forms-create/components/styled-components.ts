@@ -97,6 +97,8 @@ export const RowContent = styled('div')(() => ({
   alignItems: 'center',
   backgroundColor: 'none',
   flexGrow: '1',
+  border: '1px solid #ddd',
+  borderRadius: '3px',
 }));
 
 export const ListContainer = styled(List)(() => ({
