@@ -20,6 +20,7 @@ export default function FormsEdit() {
   const dispatch = useAppDispatch();
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const form = useAppSelector(selectCurrentForm);
+  const forms = useAppSelector((state) => state.form.forms);
 
   useEffect(() => {
     if (!form) {
@@ -28,14 +29,20 @@ export default function FormsEdit() {
   }, [navigate, form]);
 
   const [rows, setRows] = useState<RowsType>(form?.rows || {});
-  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSaveForm = () => {
-    if (!form?.name || form.name === '') {
-      setError(true);
+    if (!form?.name?.trim()) {
+      setErrorMessage('Name is required');
     } else {
-      dispatch(editForm({ ...form, rows }));
-      navigate(routes.formsList);
+      const isDuplicate = forms.some((existingForm) => existingForm.name === form.name && existingForm.id !== form.id);
+
+      if (isDuplicate) {
+        setErrorMessage('Form with the same name already exists');
+      } else {
+        dispatch(editForm({ ...form, rows }));
+        navigate(routes.formsList);
+      }
     }
   };
 
@@ -58,11 +65,11 @@ export default function FormsEdit() {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 if (form?.id) {
                   dispatch(editForm({ ...form, name: event.target.value }));
-                  if (error) setError(false);
+                  setErrorMessage('');
                 }
               }}
-              error={error}
-              helperText={error ? 'Name is required' : ''}
+              error={!!errorMessage}
+              helperText={errorMessage}
               size='small'
             />
             <Button variant={'outlined'} color={'secondary'} onClick={() => navigate(routes.formsList)}>

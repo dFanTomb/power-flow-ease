@@ -39,4 +39,5 @@ export type AddFormProps = {
   open: boolean;
   handleClose: () => void;
   onSubmit: (value: string) => void;
+  errorMessage: string | null;
 };

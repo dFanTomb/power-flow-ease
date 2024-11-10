@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { AddFormProps } from '../../types';
 
-export const AddForm = ({ open, handleClose, onSubmit }: AddFormProps) => {
-  const [form, setForm] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
+export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormProps) => {
+  const [formName, setFormName] = useState('');
 
   const handleSubmit = () => {
-    if (form === '') {
-      setError(true);
-    } else {
-      onSubmit(form);
-      setForm('');
-      setError(false);
-      handleClose();
-    }
+    onSubmit(formName);
+    setFormName('');
   };
 
   return (
@@ -25,13 +18,12 @@ export const AddForm = ({ open, handleClose, onSubmit }: AddFormProps) => {
           <TextField
             label='Name'
             variant='outlined'
-            value={form}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setForm(e.target.value);
-              if (error) setError(false);
+            value={formName}
+            onChange={(e) => {
+              setFormName(e.target.value);
             }}
-            error={error}
-            helperText={error ? 'Name is required' : ''}
+            error={!!errorMessage}
+            helperText={errorMessage}
             sx={{ flexGrow: 1 }}
           />
         </Stack>
