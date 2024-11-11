@@ -143,10 +143,6 @@ export function Navigation() {
             path: routes.formsList,
             label: 'List',
           },
-          {
-            path: routes.formsDetails,
-            label: 'Details',
-          },
         ],
       },
       {
@@ -223,11 +219,6 @@ export function Navigation() {
       {
         path: routes.todoList,
         label: 'Tasks',
-        icon: (props: any) => <ListAltOutlined {...props} />,
-      },
-      {
-        path: routes.formBuilder,
-        label: 'Form Builder',
         icon: (props: any) => <ListAltOutlined {...props} />,
       },
       {
