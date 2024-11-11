@@ -6,6 +6,7 @@ export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormPr
   const [formName, setFormName] = useState('');
 
   const handleSubmit = () => {
+    console.log('handleSubmit called');
     onSubmit(formName);
     setFormName('');
   };
@@ -21,6 +22,11 @@ export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormPr
             value={formName}
             onChange={(e) => {
               setFormName(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSubmit();
+              }
             }}
             error={!!errorMessage}
             helperText={errorMessage}

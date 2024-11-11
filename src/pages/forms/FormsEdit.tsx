@@ -68,6 +68,11 @@ export default function FormsEdit() {
                   setErrorMessage('');
                 }
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveForm();
+                }
+              }}
               error={!!errorMessage}
               helperText={errorMessage}
               size='small'
