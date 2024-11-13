@@ -6,7 +6,6 @@ export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormPr
   const [formName, setFormName] = useState('');
 
   const handleSubmit = () => {
-    console.log('handleSubmit called');
     onSubmit(formName);
     setFormName('');
   };
@@ -31,6 +30,7 @@ export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormPr
             error={!!errorMessage}
             helperText={errorMessage}
             sx={{ flexGrow: 1 }}
+            size='medium'
           />
         </Stack>
       </DialogContent>

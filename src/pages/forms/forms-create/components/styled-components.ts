@@ -14,7 +14,7 @@ export const Content = styled('div')(() => ({
 
 export const Item = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdragging',
-})<{ isdragging: boolean }>(({ isdragging }) => ({
+})<{ isdragging: boolean }>(({ theme, isdragging }) => ({
   display: 'flex',
   alignItems: 'flex-start',
   alignContent: 'flex-start',
@@ -22,8 +22,8 @@ export const Item = styled('div', {
   padding: '0.5rem',
   margin: '2px 0',
   borderRadius: '3px',
-  background: '#fff',
-  border: `1px ${isdragging ? 'dashed #000' : 'solid #ddd'}`,
+  background: theme.palette.background.paper,
+  border: `1px ${isdragging ? 'dashed' : 'solid'} ${theme.palette.mode == 'light' ? theme.palette.grey[300] : theme.palette.grey[500]}`,
 }));
 
 export const Clone = styled(Item, {
@@ -48,7 +48,7 @@ export const List = styled('div', {
 })<{ isdraggingover?: boolean }>(({ isdraggingover }) => ({
   border: `1px ${isdraggingover ? 'dashed #000' : 'solid #ddd'}`,
   background: '#fff',
-  padding: '0.5rem 0.5rem 0',
+  padding: '0.5rem',
   borderRadius: '3px',
   flex: '0 0 auto',
   fontFamily: 'sans-serif',
@@ -256,8 +256,10 @@ export const DeleteIcon = styled(Delete, {
 
 export const NewRow = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isdraggingover' && prop !== 'hasItems',
-})<{ isdraggingover?: boolean; hasItems?: boolean }>(({ isdraggingover, hasItems }) => ({
-  border: `${isdraggingover ? '1px dashed #000' : !hasItems ? '1px solid #ddd' : 'none'}`,
+})<{ isdraggingover?: boolean; hasItems?: boolean }>(({ theme, isdraggingover, hasItems }) => ({
+  border: `${
+    isdraggingover ? '1px dashed' : !hasItems ? '1px solid' : 'none'
+  } ${theme.palette.mode === 'light' ? theme.palette.grey[900] : theme.palette.grey[400]}`,
   borderRadius: '3px',
   margin: '8px',
   height: '57px',

@@ -4,11 +4,10 @@ import { routes } from './contants/routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCurrentUser } from './hooks/api/use-current-user/useCurrentUser';
 import { Loader } from './components/loader/Loader';
-import { ThemeConfigurator } from './demo/theme-configurator/ThemeConfigurator';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
-import { getThemeByName } from './theme/theme.ts';
 import { SidebarLayout } from './layouts/sidebar-layout/SidebarLayout.tsx';
+import { shadTheme } from './theme/shad-theme/shadTheme.ts';
 
 const HomePage = React.lazy(() => import('./pages/homepage/HomePage'));
 const Dashboard = React.lazy(() => import('./pages/dashboard/Dashboard'));
@@ -235,7 +234,7 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = React.createContext({ toggleColorMode: () => {}, mode: 'light' as 'light' | 'dark' });
 
 const AppRouter = () => {
   const { data: user, isLoading } = useCurrentUser();
@@ -256,17 +255,17 @@ const AppRouter = () => {
 
 export function App() {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-  const [themeName, setThemeName] = useState<'appTheme' | 'shadTheme'>('shadTheme');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
+      mode,
     }),
-    [],
+    [mode],
   );
 
-  const theme = getThemeByName(themeName, mode);
+  const theme = React.useMemo(() => shadTheme(mode), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -274,10 +273,7 @@ export function App() {
         <CssBaseline />
         <Analytics />
         <QueryClientProvider client={queryClient}>
-          <>
-            <AppRouter />
-            <ThemeConfigurator setThemeName={setThemeName} themeName={themeName} />
-          </>
+          <AppRouter />
         </QueryClientProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
