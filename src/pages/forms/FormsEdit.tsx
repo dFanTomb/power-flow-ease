@@ -47,7 +47,8 @@ export default function FormsEdit() {
   };
 
   const onDragEnd = (result: DropResult) => {
-    onDragEndHandler(result, rows, setRows, setIsDragging, Object.values(ITEMS));
+    const itemsWithIndex = Object.values(ITEMS).map((item, index) => ({ ...item, index }));
+    onDragEndHandler(result, rows, setRows, setIsDragging, itemsWithIndex);
   };
 
   return (
