@@ -1,4 +1,4 @@
-export const ITEMS = Object.entries({
+export const ITEMS = {
   'item-1': {
     id: 'item-1',
     content: 'Text Field',
@@ -35,10 +35,4 @@ export const ITEMS = Object.entries({
     id: 'item-9',
     content: 'Textarea',
   },
-}).reduce(
-  (acc, [key, value], index) => {
-    acc[key] = { ...value, index };
-    return acc;
-  },
-  {} as Record<string, { id: string; content: string; index: number }>,
-);
+};
