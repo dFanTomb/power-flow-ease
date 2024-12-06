@@ -82,16 +82,18 @@ export const Rows = ({ rows }: RowsProps) => {
       ))}
       <Box>
         <Droppable droppableId='PLACEHOLDER_ROW'>
-          {(provided, snapshot) => (
-            <NewRow
-              ref={provided.innerRef}
-              isdraggingover={snapshot.isDraggingOver}
-              hasItems={Object.keys(rows).length > 0}
-            >
-              {snapshot.isDraggingOver ? true : Object.keys(rows).length === 0}
-              {provided.placeholder}
-            </NewRow>
-          )}
+          {(provided, snapshot) => {
+            return (
+              <NewRow
+                ref={provided.innerRef}
+                isdraggingover={snapshot.isDraggingOver}
+                hasItems={Object.keys(rows).length > 0}
+              >
+                {snapshot.isDraggingOver ? true : Object.keys(rows).length === 0}
+                {provided.placeholder}
+              </NewRow>
+            );
+          }}
         </Droppable>
       </Box>
     </Box>
