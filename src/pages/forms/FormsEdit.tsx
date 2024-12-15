@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, TextField } from '@mui/material';
 import { Save } from '@mui/icons-material';
 
 import { routes } from '../../contants/routes.ts';
@@ -15,11 +15,12 @@ import { Content, TrashZone, DeleteIcon } from '../forms/forms-create/components
 import { onDragEndHandler } from './utils.ts';
 import { editForm, selectCurrentForm } from '../../store/app/formSlice.ts';
 
-export default function JobsEdit() {
+export default function FormsEdit() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const form = useAppSelector(selectCurrentForm);
+  const forms = useAppSelector((state) => state.form.forms);
 
   useEffect(() => {
     if (!form) {
@@ -28,15 +29,26 @@ export default function JobsEdit() {
   }, [navigate, form]);
 
   const [rows, setRows] = useState<RowsType>(form?.rows || {});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSaveForm = () => {
-    if (!form) return;
-    dispatch(editForm({ ...form, rows }));
-    navigate(routes.formsList);
+    if (!form?.name?.trim()) {
+      setErrorMessage('Name is required');
+    } else {
+      const isDuplicate = forms.some((existingForm) => existingForm.name === form.name && existingForm.id !== form.id);
+
+      if (isDuplicate) {
+        setErrorMessage('Form with the same name already exists');
+      } else {
+        dispatch(editForm({ ...form, rows }));
+        navigate(routes.formsList);
+      }
+    }
   };
 
   const onDragEnd = (result: DropResult) => {
-    onDragEndHandler(result, rows, setRows, setIsDragging, Object.values(ITEMS));
+    const itemsWithIndex = Object.values(ITEMS).map((item, index) => ({ ...item, index }));
+    onDragEndHandler(result, rows, setRows, setIsDragging, itemsWithIndex);
   };
 
   return (
@@ -45,7 +57,27 @@ export default function JobsEdit() {
         title={'Edit Form'}
         breadcrumbs={['Forms', 'Edit']}
         renderRight={
-          <Stack direction={'row'} justifyContent={'flex-end'} spacing={2}>
+          <Stack
+            sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: '37px', gap: '10px' }}
+          >
+            <TextField
+              label='Form Name'
+              value={form?.name || ''}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (form?.id) {
+                  dispatch(editForm({ ...form, name: event.target.value }));
+                  setErrorMessage('');
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveForm();
+                }
+              }}
+              error={!!errorMessage}
+              helperText={errorMessage}
+              size='small'
+            />
             <Button variant={'outlined'} color={'secondary'} onClick={() => navigate(routes.formsList)}>
               Cancel
             </Button>

@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Button, Container } from '@mui/material';
 
 import { routes } from '../../../contants/routes.ts';
-import { useAppDispatch } from '../../../store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
 import { PageHeader } from '../../../components/page-header/PageHeader.tsx';
 import { ITEMS } from '../constants.ts';
 import { RowsType } from '../types.ts';
@@ -20,20 +20,34 @@ export default function FormsCreate() {
   const [saveFormModalOpen, setSaveFormModalOpen] = useState<boolean>(false);
   const [rows, setRows] = useState<RowsType>({ [uuid()]: [] });
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const forms = useAppSelector((state) => state.form.forms);
+
   const handleSaveForm = (value: string) => {
-    dispatch(addForm({ id: uuid(), name: value, rows: rows }));
-    navigate(routes.formsList);
+    if (!value.trim()) {
+      setErrorMessage('Name is required.');
+    } else {
+      const isDuplicate = forms.some((form) => form.name === value);
+
+      if (isDuplicate) {
+        setErrorMessage('Form with the same name already exists.');
+      } else {
+        dispatch(addForm({ id: uuid(), name: value, rows: rows }));
+        navigate(routes.formsList);
+      }
+    }
   };
 
   const handleSaveFormModalOpen = useCallback(() => setSaveFormModalOpen(true), []);
   const handleSaveFormModalClose = useCallback(() => setSaveFormModalOpen(false), []);
 
   const onDragEnd = (result: DropResult) => {
-    onDragEndHandler(result, rows, setRows, setIsDragging, Object.values(ITEMS));
+    const itemsWithIndex = Object.values(ITEMS).map((item, index) => ({ ...item, index }));
+    onDragEndHandler(result, rows, setRows, setIsDragging, itemsWithIndex);
   };
 
   return (
@@ -47,7 +61,12 @@ export default function FormsCreate() {
           </Button>
         }
       />
-      <AddForm open={saveFormModalOpen} handleClose={handleSaveFormModalClose} onSubmit={handleSaveForm} />
+      <AddForm
+        open={saveFormModalOpen}
+        handleClose={handleSaveFormModalClose}
+        onSubmit={handleSaveForm}
+        errorMessage={errorMessage}
+      />
       <DragDropContext onDragEnd={onDragEnd} onDragStart={() => setIsDragging(true)}>
         <Content>
           <Items />

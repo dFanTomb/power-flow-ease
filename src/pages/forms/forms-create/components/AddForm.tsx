@@ -1,19 +1,13 @@
+import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { AddFormProps } from '../../types';
 
-interface AddFormProps {
-  open: boolean;
-  handleClose: () => void;
-  onSubmit: (value: string) => void;
-}
-
-export const AddForm = ({ open, handleClose, onSubmit }: AddFormProps) => {
-  const [form, setForm] = useState<string>('');
+export const AddForm = ({ open, handleClose, onSubmit, errorMessage }: AddFormProps) => {
+  const [formName, setFormName] = useState('');
 
   const handleSubmit = () => {
-    onSubmit(form);
-    setForm('');
-    handleClose();
+    onSubmit(formName);
+    setFormName('');
   };
 
   return (
@@ -24,9 +18,19 @@ export const AddForm = ({ open, handleClose, onSubmit }: AddFormProps) => {
           <TextField
             label='Name'
             variant='outlined'
-            value={form}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm(e.target.value)}
+            value={formName}
+            onChange={(e) => {
+              setFormName(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSubmit();
+              }
+            }}
+            error={!!errorMessage}
+            helperText={errorMessage}
             sx={{ flexGrow: 1 }}
+            size='medium'
           />
         </Stack>
       </DialogContent>

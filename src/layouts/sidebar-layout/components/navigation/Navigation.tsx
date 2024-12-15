@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import List from '@mui/material/List';
 import { NavigationItem } from './components/navigation-item/NavigationItem';
 import { NavigationItemType } from './components/navigation-item/types';
@@ -21,6 +20,7 @@ import {
 } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { useNotifications } from '../../../../hooks/api/use-notifications/useNotifications';
+import { SvgIconProps } from '@mui/material';
 
 export function Navigation() {
   const { data: notifications } = useNotifications();
@@ -33,14 +33,14 @@ export function Navigation() {
       {
         path: routes.dashboard,
         label: 'Dashboard',
-        icon: (props: any) => <DashboardOutlined {...props} />,
+        icon: (props: SvgIconProps) => <DashboardOutlined {...props} />,
       },
       {
         header: 'Pages',
       },
       {
         label: 'User',
-        icon: (props: any) => <AccountBoxOutlined {...props} />,
+        icon: (props: SvgIconProps) => <AccountBoxOutlined {...props} />,
         description: 'User management',
         items: [
           {
@@ -67,7 +67,7 @@ export function Navigation() {
       },
       {
         label: 'Blog',
-        icon: (props: any) => <Notes {...props} />,
+        icon: (props: SvgIconProps) => <Notes {...props} />,
         description: 'Blog management',
         items: [
           {
@@ -90,7 +90,7 @@ export function Navigation() {
       },
       {
         label: 'Orders',
-        icon: (props: any) => <Abc {...props} />,
+        icon: (props: SvgIconProps) => <Abc {...props} />,
         description: 'Order management',
         items: [
           {
@@ -105,7 +105,7 @@ export function Navigation() {
       },
       {
         label: 'Jobs',
-        icon: (props: any) => <Abc {...props} />,
+        icon: (props: SvgIconProps) => <Abc {...props} />,
         description: 'Job management',
         items: [
           {
@@ -128,7 +128,7 @@ export function Navigation() {
       },
       {
         label: 'Forms',
-        icon: (props: any) => <FormatListBulleted {...props} />,
+        icon: (props: SvgIconProps) => <FormatListBulleted {...props} />,
         description: 'Form management',
         items: [
           {
@@ -143,15 +143,11 @@ export function Navigation() {
             path: routes.formsList,
             label: 'List',
           },
-          {
-            path: routes.formsDetails,
-            label: 'Details',
-          },
         ],
       },
       {
         label: 'Templates',
-        icon: (props: any) => <Abc {...props} />,
+        icon: (props: SvgIconProps) => <Abc {...props} />,
         description: 'Templates management',
         items: [
           {
@@ -174,24 +170,24 @@ export function Navigation() {
       },
       {
         label: 'System',
-        icon: (props: any) => <SystemUpdate {...props} />,
+        icon: (props: SvgIconProps) => <SystemUpdate {...props} />,
         description: 'System pages',
         items: [
           {
             path: routes.notFound,
             label: '(404) Page not found',
-            icon: (props: any) => <QuestionMarkOutlined {...props} />,
+            icon: (props: SvgIconProps) => <QuestionMarkOutlined {...props} />,
           },
           {
             path: routes.maintenance,
             label: 'Under construction',
-            icon: (props: any) => <ConstructionOutlined {...props} />,
+            icon: (props: SvgIconProps) => <ConstructionOutlined {...props} />,
           },
         ],
       },
       {
         label: 'Authentication',
-        icon: (props: any) => <Login {...props} />,
+        icon: (props: SvgIconProps) => <Login {...props} />,
         description: 'Authentication pages',
         items: [
           {
@@ -218,24 +214,19 @@ export function Navigation() {
       {
         path: routes.calendar,
         label: 'Calendar',
-        icon: (props: any) => <CalendarMonthOutlined {...props} />,
+        icon: (props: SvgIconProps) => <CalendarMonthOutlined {...props} />,
       },
       {
         path: routes.todoList,
         label: 'Tasks',
-        icon: (props: any) => <ListAltOutlined {...props} />,
-      },
-      {
-        path: routes.formBuilder,
-        label: 'Form Builder',
-        icon: (props: any) => <ListAltOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ListAltOutlined {...props} />,
       },
       {
         header: 'Documentation',
       },
       {
         label: 'Theme',
-        icon: (props: any) => <DesignServicesOutlined {...props} />,
+        icon: (props: SvgIconProps) => <DesignServicesOutlined {...props} />,
         items: [
           {
             path: routes.themeTypography,
@@ -249,7 +240,7 @@ export function Navigation() {
       },
       {
         label: 'Components',
-        icon: (props: any) => <ShapeLineOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ShapeLineOutlined {...props} />,
         items: [
           {
             path: routes.componentsButton,
@@ -263,14 +254,14 @@ export function Navigation() {
       {
         path: '',
         label: 'Number',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: `${notifications?.notifications?.length}`,
         badgeColor: 'primary',
       },
       {
         path: '',
         label: 'Description',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: 'New',
         badgeColor: 'info',
         description: 'This is a description',
@@ -278,7 +269,7 @@ export function Navigation() {
       {
         path: '',
         label: 'Disabled',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeColor: 'info',
         disabled: true,
         description: 'This is a disabled item',
@@ -286,28 +277,28 @@ export function Navigation() {
       {
         path: '',
         label: 'Color primary',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: 'New',
         badgeColor: 'primary',
       },
       {
         path: '',
         label: 'Color secondary',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: 'New',
         badgeColor: 'secondary',
       },
       {
         path: '',
         label: 'Color info',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: 'New',
         badgeColor: 'info',
       },
       {
         path: '',
         label: 'Very long text as a link text',
-        icon: (props: any) => <ViewStreamOutlined {...props} />,
+        icon: (props: SvgIconProps) => <ViewStreamOutlined {...props} />,
         badgeText: 'New',
         badgeColor: 'info',
         external: true,

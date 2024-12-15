@@ -18,7 +18,7 @@ import { RowItemType, RowItemProps } from '../../types';
 import { Handle, StyledButton, StyledInputElement, StyledInputRoot, RowContent } from './styled-components';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 
-export const RowItem = ({ item, handleProps }: RowItemProps) => {
+export const RowItem = ({ item, handleProps, isDragging }: RowItemProps) => {
   const [name, setName] = useState<string>('');
   const [radioValue, setRadioValue] = useState<string>('a');
   const [numberValue, setNumberValue] = useState<number | null>(null);
@@ -111,7 +111,7 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
               id='radio-group'
               value={radioValue}
               onChange={handleChangeRadio}
-              sx={{ padding: '10px 10px' }}
+              sx={{ padding: '5px 10px' }}
             >
               <FormControlLabel value='a' control={<Radio />} label='True' />
               <FormControlLabel value='b' control={<Radio />} label='False' />
@@ -141,7 +141,11 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
       case 'Checkbox':
         return (
           <FormGroup sx={{ display: 'flex', alignContent: 'center' }}>
-            <FormControlLabel control={<Checkbox id='checkbox' />} label='Checkbox' sx={{ marginLeft: '2px' }} />
+            <FormControlLabel
+              control={<Checkbox id='checkbox' />}
+              label='Checkbox'
+              sx={{ marginLeft: '2px', padding: '5px 0' }}
+            />
           </FormGroup>
         );
       case 'Button':
@@ -190,7 +194,7 @@ export const RowItem = ({ item, handleProps }: RowItemProps) => {
         setIsHovered(false);
       }}
     >
-      {isHovered && (
+      {(isHovered || isDragging) && (
         <Handle {...handleProps}>
           <DragIndicatorOutlinedIcon
             sx={{

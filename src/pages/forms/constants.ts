@@ -36,15 +36,3 @@ export const ITEMS = {
     content: 'Textarea',
   },
 };
-
-export const ROWS = {
-  'row-1': { id: 'row-1', items: [] },
-};
-
-const ROW_ORDER = ['row-1'];
-
-export const INITIAL_ITEM_DATA = {
-  items: ITEMS,
-  rows: ROWS,
-  rowOrder: ROW_ORDER,
-};
