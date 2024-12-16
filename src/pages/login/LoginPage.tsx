@@ -4,9 +4,31 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '../../contants/routes';
 import { WelcomeContent } from '../../content/welcome-content/WelcomeContent';
 import { HalfLayout } from '../../layouts/half-layout/HalfLayout';
+import { useAppDispatch } from '../../store/hooks';
+import { useState } from 'react';
+import { login } from '../../store/app/authSlice';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (email && password) {
+      dispatch(
+        login({
+          firstName: '',
+          lastName: '',
+          username: '',
+          email: '',
+          password: '',
+        }),
+      );
+      navigate(routes.dashboard);
+    }
+  };
 
   return (
     <HalfLayout>
@@ -17,13 +39,19 @@ export default function LoginPage() {
         </Typography>
         <Typography variant={'body1'}>Enter your credentials below</Typography>
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Email'} />
+          <TextField fullWidth placeholder={'Email'} value={email} onChange={(e) => setEmail(e.target.value)} />
         </FormControl>
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Password'} type={'password'} />
+          <TextField
+            fullWidth
+            placeholder={'Password'}
+            type={'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </FormControl>
 
-        <Button variant={'contained'} fullWidth onClick={() => navigate(routes.dashboard)}>
+        <Button variant={'contained'} fullWidth onClick={handleLogin}>
           Login
         </Button>
         <Divider sx={{ width: '100%' }} />
