@@ -1,11 +1,12 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Divider, FormControl, Link, Stack, TextField, Typography } from '@mui/material';
 import { Facebook, Google } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+
 import { routes } from '../../contants/routes';
 import { WelcomeContent } from '../../content/welcome-content/WelcomeContent';
 import { HalfLayout } from '../../layouts/half-layout/HalfLayout';
 import { useAppDispatch } from '../../store/hooks';
-import { useState } from 'react';
 import { login } from '../../store/app/authSlice';
 
 export default function LoginPage() {
@@ -14,19 +15,47 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = () => {
-    if (email && password) {
-      dispatch(
-        login({
-          firstName: '',
-          lastName: '',
-          username: '',
-          email: '',
-          password: '',
-        }),
-      );
-      navigate(routes.dashboard);
+    setEmailError(!email);
+    setPasswordError(!password);
+
+    if (!email || !password) {
+      return setErrorMessage('Field is required.');
+    }
+
+    setErrorMessage('');
+
+    dispatch(
+      login({
+        firstName: '',
+        lastName: '',
+        username: '',
+        email,
+        password,
+      }),
+    );
+    navigate(routes.dashboard);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+
+    if (e.target.value.includes('@')) {
+      setEmailError(false);
+      setErrorMessage('');
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+
+    if (e.target.value) {
+      setPasswordError(false);
+      setErrorMessage('');
     }
   };
 
@@ -39,7 +68,14 @@ export default function LoginPage() {
         </Typography>
         <Typography variant={'body1'}>Enter your credentials below</Typography>
         <FormControl fullWidth>
-          <TextField fullWidth placeholder={'Email'} value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField
+            fullWidth
+            placeholder={'Email'}
+            value={email}
+            onChange={handleEmailChange}
+            error={emailError}
+            helperText={emailError ? errorMessage : ''}
+          />
         </FormControl>
         <FormControl fullWidth>
           <TextField
@@ -47,7 +83,9 @@ export default function LoginPage() {
             placeholder={'Password'}
             type={'password'}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
+            error={passwordError}
+            helperText={passwordError ? errorMessage : ''}
           />
         </FormControl>
 
