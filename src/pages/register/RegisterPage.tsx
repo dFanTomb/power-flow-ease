@@ -20,18 +20,75 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-    if (firstName && lastName && username && email && password && confirmPassword) {
-      if (password === confirmPassword) {
-        const newUser = { firstName, lastName, username, email, password };
-        dispatch(register(newUser));
-        navigate(routes.dashboard);
-      } else {
-        alert('Passwords do not match');
-      }
+  const [errorMessage, setErrorMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({
+    firstName: false,
+    lastName: false,
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  const handleFieldChange = (field: keyof typeof fieldErrors, value: string) => {
+    const newErrors = { ...fieldErrors };
+
+    if (field === 'email') {
+      newErrors[field] = !value.includes('@');
+    } else if (field === 'confirmPassword') {
+      newErrors[field] = value !== password;
     } else {
-      alert('Please fill in all fields');
+      newErrors[field] = value.trim() === '';
     }
+
+    setFieldErrors(newErrors);
+
+    switch (field) {
+      case 'firstName':
+        setFirstName(value);
+        break;
+      case 'lastName':
+        setLastName(value);
+        break;
+      case 'username':
+        setUsername(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleRegister = () => {
+    const errors = {
+      firstName: !firstName,
+      lastName: !lastName,
+      username: !username,
+      email: !email,
+      password: !password,
+      confirmPassword: !confirmPassword || password !== confirmPassword,
+    };
+
+    setFieldErrors(errors);
+
+    if (Object.values(errors).some((hasError) => hasError)) {
+      return setErrorMessage(
+        errors.confirmPassword && password !== confirmPassword ? 'Passwords do not match' : 'All fields are required',
+      );
+    }
+
+    setErrorMessage('');
+    const newUser = { firstName, lastName, username, email, password };
+    dispatch(register(newUser));
+    navigate(routes.dashboard);
   };
 
   return (
@@ -49,7 +106,9 @@ export default function RegisterPage() {
               fullWidth
               placeholder={'First name'}
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => handleFieldChange('firstName', e.target.value)}
+              error={fieldErrors.firstName}
+              helperText={fieldErrors.firstName && 'First name is required'}
             />
           </FormControl>
           <FormControl fullWidth>
@@ -58,7 +117,9 @@ export default function RegisterPage() {
               fullWidth
               placeholder={'Last name'}
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => handleFieldChange('lastName', e.target.value)}
+              error={fieldErrors.lastName}
+              helperText={fieldErrors.lastName && 'Last name is required'}
             />
           </FormControl>
         </Stack>
@@ -68,7 +129,9 @@ export default function RegisterPage() {
             fullWidth
             placeholder={'Username'}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => handleFieldChange('username', e.target.value)}
+            error={fieldErrors.username}
+            helperText={fieldErrors.username && 'Username is required'}
           />
         </FormControl>
         <FormControl fullWidth>
@@ -77,7 +140,9 @@ export default function RegisterPage() {
             fullWidth
             placeholder={'Email'}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleFieldChange('email', e.target.value)}
+            error={fieldErrors.email}
+            helperText={fieldErrors.email && 'Email is required'}
           />
         </FormControl>
         <FormControl fullWidth>
@@ -87,7 +152,9 @@ export default function RegisterPage() {
             placeholder={'Password'}
             type={'password'}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleFieldChange('password', e.target.value)}
+            error={fieldErrors.password}
+            helperText={fieldErrors.password && 'Password is required'}
           />
         </FormControl>
         <FormControl fullWidth>
@@ -97,9 +164,20 @@ export default function RegisterPage() {
             placeholder={'Password'}
             type={'password'}
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
+            error={fieldErrors.confirmPassword}
+            helperText={
+              fieldErrors.confirmPassword &&
+              (password !== confirmPassword ? 'Password do not match' : 'Confirm password is required')
+            }
           />
         </FormControl>
+
+        {errorMessage && (
+          <Typography color={'error'} variant={'body2'}>
+            {errorMessage}
+          </Typography>
+        )}
 
         <Button variant={'contained'} fullWidth onClick={handleRegister}>
           Create account
