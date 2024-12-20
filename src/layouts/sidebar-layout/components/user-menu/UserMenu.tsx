@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
+
 import {
   UserMenuContainer,
   UserMenuIconButton,
@@ -6,18 +10,27 @@ import {
   UserMenuMenuItem,
   UserMenuMenuItemWithSeparator,
 } from './styled';
-import React, { useState } from 'react';
-import { Typography } from '@mui/material';
+
+import { routes } from '../../../../contants/routes';
 import { User } from '../../../../types/user/userTypes';
+import { useAppDispatch } from '../../../../store/hooks';
 import { UserAvatar } from '../../../../components/user-avatar/UserAvatar';
+import { logout } from '../../../../store/app/authSlice';
 
 export const UserMenu = ({ user }: { user: User }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(routes.login);
   };
 
   return (
@@ -41,7 +54,7 @@ export const UserMenu = ({ user }: { user: User }) => {
         </UserMenuInfo>
         <UserMenuMenuItem onClick={handleClose}>Profile</UserMenuMenuItem>
         <UserMenuMenuItem onClick={handleClose}>My account</UserMenuMenuItem>
-        <UserMenuMenuItemWithSeparator onClick={handleClose}>Logout</UserMenuMenuItemWithSeparator>
+        <UserMenuMenuItemWithSeparator onClick={handleLogout}>Logout</UserMenuMenuItemWithSeparator>
       </UserMenuMenu>
     </UserMenuContainer>
   );

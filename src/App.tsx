@@ -1,13 +1,16 @@
-import { CssBaseline, Fade, ThemeProvider } from '@mui/material';
+import React, { Suspense, useEffect } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Analytics } from '@vercel/analytics/react';
+import { CssBaseline, Fade, ThemeProvider } from '@mui/material';
 import { routes } from './contants/routes';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCurrentUser } from './hooks/api/use-current-user/useCurrentUser';
 import { Loader } from './components/loader/Loader';
-import React, { Suspense } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import { SidebarLayout } from './layouts/sidebar-layout/SidebarLayout.tsx';
 import { shadTheme } from './theme/shad-theme/shadTheme.ts';
+import { setUserFromLocalStorage } from './store/app/authSlice.ts';
 
 const HomePage = React.lazy(() => import('./pages/homepage/HomePage'));
 const Dashboard = React.lazy(() => import('./pages/dashboard/Dashboard'));
@@ -254,6 +257,12 @@ const AppRouter = () => {
 };
 
 export function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setUserFromLocalStorage());
+  }, [dispatch]);
+
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
   const colorMode = React.useMemo(
     () => ({
