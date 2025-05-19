@@ -29,3 +29,14 @@ export interface User {
   status?: string;
   lastLogin?: string;
 }
+
+export type UserFormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  username: string;
+  image: string;
+  age: number;
+  birthDate: string;
+};

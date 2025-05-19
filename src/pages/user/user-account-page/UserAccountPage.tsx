@@ -39,7 +39,8 @@ function TabPanel(props: TabPanelProps) {
 
 export default function UserAccountPage() {
   const [value, setValue] = React.useState(0);
-  const { data: user, isLoading } = useCurrentUser();
+  const user = useCurrentUser();
+  const isLoading = !user;
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -54,14 +55,14 @@ export default function UserAccountPage() {
 
   const defaultValues = user
     ? {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        username: user.username,
-        image: user.image,
-        age: user.age,
-        birthDate: user.birthDate,
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        email: user?.email || '',
+        phone: user?.phone || '',
+        username: user?.username || '',
+        image: user?.image || '',
+        age: user?.age || 0,
+        birthDate: user?.birthDate || '',
       }
     : undefined;
 
