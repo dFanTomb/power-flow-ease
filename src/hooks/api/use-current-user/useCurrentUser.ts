@@ -1,16 +1,28 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import users from '../../../mocks/users/users.json';
-import { CurrentUserReturn } from '../use-user/types';
+import { useAppSelector } from '../../../store/hooks';
+import { User } from '../../../types/user/userTypes';
+
 import mockAvatar from '../../../mocks/users/assets/avatar.png';
 import mockCover from '../../../mocks/users/assets/cover.png';
 
-export const useCurrentUser = (): CurrentUserReturn => {
-  return useSuspenseQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => ({
-      ...users.users[0],
-      image: users.users[0].image || mockAvatar,
-      profileBackground: mockCover,
-    }),
-  });
+export const useCurrentUser = (): User | null => {
+  const user = useAppSelector((state) => state.auth.currentUser);
+
+  if (!user) return null;
+
+  return {
+    age: 0,
+    phone: '',
+    company: '',
+    birthDate: '',
+    about: '',
+    address: '',
+    website: '',
+    role: '',
+    status: '',
+    lastLogin: new Date().toISOString(),
+
+    ...user,
+    image: user.image || mockAvatar,
+    profileBackground: user.profileBackground || mockCover,
+  };
 };

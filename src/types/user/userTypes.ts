@@ -10,18 +10,22 @@ export interface UserAddress {
 }
 
 export interface User {
-  id: number | null;
-  age: number;
+  id: number;
   firstName: string;
   lastName: string;
-  image: string;
-  email: string;
-  phone: string;
   username: string;
-  birthDate: string;
-  profileBackground: string;
-  company: UserCompany;
-  about: string;
-  address: UserAddress;
-  website: string;
+  email: string;
+  password: string;
+  image?: string;
+  profileBackground?: string;
+  age?: number;
+  phone?: string;
+  company?: string;
+  birthDate?: string;
+  about?: string;
+  address?: string;
+  website?: string;
+  role?: string;
+  status?: string;
+  lastLogin?: string;
 }

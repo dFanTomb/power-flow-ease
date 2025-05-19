@@ -85,10 +85,20 @@ export default function RegisterPage() {
       );
     }
 
-    setErrorMessage('');
-    const newUser = { firstName, lastName, username, email, password };
-    dispatch(register(newUser));
-    navigate(routes.dashboard);
+    try {
+      dispatch(
+        register({
+          firstName,
+          lastName,
+          username,
+          email,
+          password,
+        }),
+      );
+      navigate(routes.dashboard);
+    } catch (error) {
+      setErrorMessage('Registration failed. Email may already be in use.');
+    }
   };
 
   return (
