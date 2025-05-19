@@ -8,7 +8,10 @@ import { Notifications } from '../notifications/Notifications';
 import { ColorModeContext } from '../../../../App';
 
 export const ToolbarElements = () => {
-  const { data: user } = useCurrentUser();
+  // const { data: user } = useCurrentUser();
+  const user = useCurrentUser(); // Now returns User | null directly
+  console.log('Current user:', user);
+
   const colorMode = useContext(ColorModeContext);
 
   if (!user) return null;

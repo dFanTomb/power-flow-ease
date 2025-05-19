@@ -27,18 +27,12 @@ export default function LoginPage() {
       return setErrorMessage('Field is required.');
     }
 
-    setErrorMessage('');
-
-    dispatch(
-      login({
-        firstName: '',
-        lastName: '',
-        username: '',
-        email,
-        password,
-      }),
-    );
-    navigate(routes.dashboard);
+    try {
+      dispatch(login({ email, password }));
+      navigate(routes.dashboard);
+    } catch (error) {
+      setErrorMessage('Invalid email or password');
+    }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
