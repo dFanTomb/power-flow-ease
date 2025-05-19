@@ -20,7 +20,6 @@ export const useCurrentUser = (): User | null => {
     role: '',
     status: '',
     lastLogin: new Date().toISOString(),
-
     ...user,
     image: user.image || mockAvatar,
     profileBackground: user.profileBackground || mockCover,
