@@ -20,10 +20,15 @@ export interface User {
   profileBackground?: string;
   age?: number;
   phone?: string;
-  company?: string;
+  company?: {
+    name?: string;
+    department?: string;
+  };
   birthDate?: string;
   about?: string;
-  address?: string;
+  address?: {
+    city?: string;
+  };
   website?: string;
   role?: string;
   status?: string;

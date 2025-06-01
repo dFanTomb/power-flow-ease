@@ -1,5 +1,6 @@
-import { UserProfilePost } from '../user-profile-post/UserProfilePost';
 import { Stack } from '@mui/material';
+
+import { UserProfilePost } from '../user-profile-post/UserProfilePost';
 import { UserPost } from '../../../../../types/user/userPostsTypes';
 import { User } from '../../../../../types/user/userTypes';
 
