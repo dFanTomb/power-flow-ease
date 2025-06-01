@@ -4,11 +4,19 @@ import { Edit, Message, Photo } from '@mui/icons-material';
 import { UserAvatar } from '../../../../../components/user-avatar/UserAvatar';
 import { User } from '../../../../../types/user/userTypes';
 
-export const UserProfileHeader = ({ user }: { user: User }) => {
+export const UserProfileHeader = ({ user }: { user?: User }) => {
+  const safeUser = {
+    firstName: 'Unknown',
+    lastName: 'User',
+    profileBackground: '',
+    company: {},
+    ...user,
+  };
+
   return (
     <Stack>
       <Paper
-        sx={{ background: `url(${user.profileBackground})`, backgroundSize: 'cover', height: '300px', padding: 2 }}
+        sx={{ background: `url(${safeUser.profileBackground})`, backgroundSize: 'cover', height: '300px', padding: 2 }}
       >
         <Stack justifyContent={'flex-end'} alignItems={'flex-end'} height={'100%'}>
           <Button startIcon={<Photo />} variant={'contained'} color={'secondary'}>
@@ -27,9 +35,9 @@ export const UserProfileHeader = ({ user }: { user: User }) => {
           <UserAvatar sx={{ width: '120px', height: '120px' }} />
           <Stack>
             <Typography fontWeight={'fontWeightMedium'} fontSize={22}>
-              {user.firstName} {user.lastName}
+              {safeUser.firstName} {safeUser.lastName}
             </Typography>
-            <Typography fontSize={14}>{user.company.department}</Typography>
+            <Typography fontSize={14}>{safeUser.company?.department || 'No department'}</Typography>
           </Stack>
         </Stack>
         <Stack spacing={2} direction={'row'}>

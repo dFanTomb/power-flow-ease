@@ -1,14 +1,27 @@
+import React from 'react';
 import { IconButton, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Comment, Delete, Edit, Favorite, MoreVert, Share } from '@mui/icons-material';
+
 import { UserPost } from '../../../../../types/user/userPostsTypes';
 import { UserAvatar } from '../../../../../components/user-avatar/UserAvatar';
 import { User } from '../../../../../types/user/userTypes';
-import React from 'react';
-import { Comment, Delete, Edit, Favorite, MoreVert, Share } from '@mui/icons-material';
 import { UserProfileComment } from '../user-profile-comment/UserProfileComment';
 
-export const UserProfilePost = ({ post, user }: { post: UserPost; user: User }) => {
+interface Props {
+  post: UserPost;
+  user?: User | null;
+}
+
+export const UserProfilePost = ({ post, user }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const safeUser = {
+    firstName: 'Unknown',
+    lastName: 'User',
+    ...user,
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,11 +38,18 @@ export const UserProfilePost = ({ post, user }: { post: UserPost; user: User }) 
       <Stack spacing={3}>
         <Stack direction={'row'} justifyContent={'space-between'}>
           <Stack direction={'row'} spacing={2} alignItems={'center'}>
-            <UserAvatar />
+            <UserAvatar
+              user={{
+                image: safeUser.image,
+                firstName: safeUser.firstName,
+                lastName: safeUser.lastName,
+              }}
+              sx={{ width: 40, height: 40 }}
+            />
             <Stack>
               <Stack spacing={0.5} direction={'row'} alignItems={'center'}>
                 <Typography fontSize={'14px'} fontWeight={'fontWeightMedium'}>
-                  {user.firstName} {user.lastName}
+                  {safeUser.firstName} {safeUser.lastName}
                 </Typography>
                 <Typography fontSize={'14px'}>updated status</Typography>
               </Stack>
