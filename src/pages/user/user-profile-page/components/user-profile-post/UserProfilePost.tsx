@@ -29,8 +29,13 @@ export const UserProfilePost = ({ post, user }: Props) => {
     setAnchorEl(null);
   };
 
-  const commentsList = post.comments.map((comment) => {
-    return <UserProfileComment key={comment.id} comment={comment} />;
+  const commentsList = post.comments.map((comment, index) => {
+    // console.log(
+    //   'CommentID: ',
+    //   post.comments.map(() => `${comment.id}-${index}`),
+    // );
+
+    return <UserProfileComment key={`${comment.id}-${index}`} comment={comment} />;
   });
 
   return (

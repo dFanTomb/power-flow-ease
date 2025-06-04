@@ -14,7 +14,7 @@ export interface Comment {
 }
 
 export interface UserPost {
-  id: number;
+  id: string | number;
   userId: number;
   description: string;
   created: string;

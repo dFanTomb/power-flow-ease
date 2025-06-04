@@ -12,10 +12,17 @@ export const useCurrentUser = (): User | null => {
   return {
     age: 0,
     phone: '',
-    company: '',
+    company: {
+      name: '',
+      department: '',
+      ...user.company,
+    },
     birthDate: '',
     about: '',
-    address: '',
+    address: {
+      city: '',
+      ...user.address,
+    },
     website: '',
     role: '',
     status: '',
