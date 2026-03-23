@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
     "@hello-pangea/dnd": "^16.6.0",
+    "@mui/base": "^5.0.0-beta.70",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@mui/x-data-grid": "^7.8.0",

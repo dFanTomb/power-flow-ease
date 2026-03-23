@@ -42,10 +42,10 @@ export const authSlice = createSlice({
         // default values for new properties
         age: action.payload.age || 0,
         phone: action.payload.phone || '',
-        company: action.payload.company || '',
+        company: action.payload.company || {},
         birthDate: action.payload.birthDate || '',
         about: action.payload.about || '',
-        address: action.payload.address || '',
+        address: action.payload.address || {},
         website: action.payload.website || '',
         role: action.payload.role || 'user',
         status: action.payload.status || 'active',
